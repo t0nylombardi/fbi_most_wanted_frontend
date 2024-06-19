@@ -1,4 +1,8 @@
 /** @type {import('tailwindcss').Config} */
+import typography from "@tailwindcss/typography";
+import forms from "@tailwindcss/forms";
+import lineClamp from "@tailwindcss/line-clamp";
+
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
@@ -72,5 +76,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [typography, forms, lineClamp],
 };
