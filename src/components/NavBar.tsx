@@ -11,9 +11,9 @@ const NavBar = () => {
 
   return (
     <header>
-      <nav role="navbar">
-        <div className="flex flex-wrap items-center justify-between mx-auto py-4 px-12">
-          <div className="px-8">
+      <nav role="navbar" className="px-[4rem]">
+        <div className="flex items-center justify-between py-4 px-2">
+          <div className="">
             <h1 className="text-2xl">
               <a role="link" href="/" className="hover:text-cedar-wood-finish-400">
                 FBI WANTED
@@ -45,10 +45,10 @@ const NavBar = () => {
             </svg>
           </button>
           <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-            <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0">
+            <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:space-x-2 rtl:space-x-reverse md:mt-0 md:border-0">
               {links.map((link, index) => (
-                <li key={index}>
-                  <a href={link.url} className="btn">
+                <li key={index} className="p-0 m-0">
+                  <a role="link" href={link.url} className="btn">
                     {link.title}
                   </a>
                 </li>
