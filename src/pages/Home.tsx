@@ -1,7 +1,11 @@
-// import React from 'react'
+import PageWrapper from "../components/PageWrapper";
 
 const Home = () => {
-  return <div>Home</div>;
+  return (
+    <PageWrapper>
+      <h1 className="text-2xl font-bold">Home</h1>
+    </PageWrapper>
+  );
 };
 
 export default Home;

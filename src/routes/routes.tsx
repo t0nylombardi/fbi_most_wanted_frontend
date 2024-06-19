@@ -1,9 +1,7 @@
 import type { RouteObject } from "react-router";
 import App from "../App";
 import Home from "../pages/Home";
-// import About from "./pages/About";
-// import Login from "./pages/Login";
-// import UserProfile from "./pages/UserProfile";
+import TopTen from "../pages/TopTen";
 import ErrorPage from "../pages/ErrorPage";
 
 const routes: RouteObject[] = [
@@ -15,6 +13,10 @@ const routes: RouteObject[] = [
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/top-ten",
+        element: <TopTen />,
       },
     ],
   },

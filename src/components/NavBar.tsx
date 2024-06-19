@@ -1,12 +1,12 @@
 const NavBar = () => {
   const links = [
-    { title: "Ten Most Wanted", url: "#" },
-    { title: "Fugitives", url: "#" },
-    { title: "Capitol Violence", url: "#" },
-    { title: "Terrorism", url: "#" },
-    { title: "Missing Persons", url: "#" },
-    { title: "Parental Kidnappings", url: "#" },
-    { title: "Seeking Info", url: "#" },
+    { title: "Ten Most Wanted", url: "/top-ten" },
+    { title: "Fugitives", url: "/fugitives" },
+    { title: "Capitol Violence", url: "/capitol-violence" },
+    { title: "Terrorism", url: "/terrorism" },
+    { title: "Missing Persons", url: "/missing-persons" },
+    { title: "Kidnappings", url: "/kifnappings" },
+    { title: "Seeking Info", url: "/seeking-info" },
   ];
 
   return (
@@ -14,7 +14,7 @@ const NavBar = () => {
       <nav role="navbar" className="px-[4rem]">
         <div className="flex items-center justify-between py-4 px-2">
           <div className="">
-            <h1 className="text-2xl">
+            <h1 className="text-3xl">
               <a role="link" href="/" className="hover:text-cedar-wood-finish-400">
                 FBI WANTED
               </a>

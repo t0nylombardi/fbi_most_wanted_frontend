@@ -6,6 +6,9 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "types": ["@testing-library/jest-dom"],
+    "paths": {
+      "react": ["./node_modules/@types/react"]
+    },
 
     /* Bundler mode */
     "moduleResolution": "bundler",
