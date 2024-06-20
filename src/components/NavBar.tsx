@@ -1,12 +1,13 @@
+import React from "react";
+
 const NavBar = () => {
   const links = [
     { title: "Ten Most Wanted", url: "/top-ten" },
-    { title: "Fugitives", url: "/fugitives" },
-    { title: "Capitol Violence", url: "/capitol-violence" },
+    { title: "Wanted", url: "/wanted" },
     { title: "Terrorism", url: "/terrorism" },
-    { title: "Missing Persons", url: "/missing-persons" },
+    { title: "Seeking Information", url: "/seeking-info" },
     { title: "Kidnappings", url: "/kifnappings" },
-    { title: "Seeking Info", url: "/seeking-info" },
+    { title: "Missing Persons", url: "/missing-persons" },
   ];
 
   return (

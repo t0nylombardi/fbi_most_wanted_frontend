@@ -1,3 +1,4 @@
+import React from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
@@ -20,22 +21,20 @@ describe("NavBar component", () => {
   test("renders all navigation links", () => {
     render(<NavBar />);
 
-    // List of link titles
-    const linkTitles = [
-      "Ten Most Wanted",
-      "Fugitives",
-      "Capitol Violence",
-      "Terrorism",
-      "Missing Persons",
-      "Parental Kidnappings",
-      "Seeking Info",
+    const links = [
+      { title: "Ten Most Wanted", url: "/top-ten" },
+      { title: "Wanted", url: "/wanted" },
+      { title: "Terrorism", url: "/terrorism" },
+      { title: "Seeking Information", url: "/seeking-info" },
+      { title: "Kidnappings", url: "/kifnappings" },
+      { title: "Missing Persons", url: "/missing-persons" },
     ];
 
-    // Check if all link titles are rendered
-    linkTitles.forEach(title => {
-      const linkElement = screen.getByRole("link", { name: title });
+    // Check if all link titles and urls
+    links.forEach(link => {
+      const linkElement = screen.getByRole("link", { name: link.title });
       expect(linkElement).toBeInTheDocument();
-      expect(linkElement).toHaveAttribute("href", "#");
+      expect(linkElement).toHaveAttribute("href", link.url);
     });
   });
 
