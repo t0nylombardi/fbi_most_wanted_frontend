@@ -30,6 +30,7 @@ const Home: React.FC = () => {
   const wantedPerson = data[0];
   return (
     <PageWrapper>
+      <h1 className="mx-[6rem] px-[3.9rem] text-4xl text-chilean-fire-500 ">CASE OF THE WEEK</h1>
       <SinglePersonCard person={wantedPerson} />
     </PageWrapper>
   );
