@@ -14,9 +14,9 @@ describe("fetchData", () => {
       json: async () => mockResponse,
     });
 
-    const data = await fetchData("/test-endpoint");
+    const data = await fetchData("/case_of_the_week");
 
-    expect(fetch).toHaveBeenCalledWith("https://your-api-domain.com/test-endpoint", {
+    expect(fetch).toHaveBeenCalledWith("http://localhost:3000/case_of_the_week", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
       body: undefined,
@@ -30,6 +30,6 @@ describe("fetchData", () => {
       text: async () => "Error message",
     });
 
-    await expect(fetchData("/test-endpoint")).rejects.toThrow("Error message");
+    await expect(fetchData("/case_of_the_week")).rejects.toThrow("Error message");
   });
 });

@@ -1,13 +1,12 @@
-// src/services/types.ts
-
 export interface Image {
-  caption: string;
-  large: string;
-  original: string;
-  thumb: string;
+  caption: string | null | undefined;
+  large: string | null | undefined;
+  original: string | null | undefined;
+  thumb: string | null | undefined;
 }
 
 export interface WantedPerson {
+  id: string;
   age_range: string | null;
   details: string | null;
   description: string | null;
@@ -18,11 +17,24 @@ export interface WantedPerson {
   images: Image[];
   place_of_birth: string | null;
   race: string | null;
-  sex: string;
-  title: string;
-  url: string;
+  sex: string | null;
+  title: string | null;
+  url: string | null;
   weight_max: number | null;
   weight_min: number | null;
+  [key: string]: string | number | null | undefined | Image[];
+  [key: number]: string | number | null | undefined | Image[];
+}
+
+export interface PersonDetails {
+  age_range: string | null | undefined;
+  eyes: string | null | undefined;
+  hair: string | null | undefined;
+  height_max: number | null | undefined;
+  place_of_birth: string | null | undefined;
+  race: string | null | undefined;
+  sex: string | null | undefined;
+  weight_max: number | null | undefined;
 }
 
 export interface ApiResponse {

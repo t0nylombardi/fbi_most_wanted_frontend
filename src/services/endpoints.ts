@@ -1,10 +1,16 @@
 // src/services/endpoints.ts
 
 import { fetchData } from "./api";
-import { WantedPerson, ApiResponse } from "./types";
+import { WantedPerson } from "./types";
 
-const processWantedPersons = (data: ApiResponse): WantedPerson[] => {
-  return data.items.map((item: WantedPerson) => ({
+const processWantedPersons = (data: WantedPerson[]): WantedPerson[] => {
+  if (!data) return [];
+
+  // if data is not an array, return it as an array
+  if (!Array.isArray(data)) return [data];
+
+  return data.map((item: WantedPerson) => ({
+    id: item.id,
     age_range: item.age_range,
     details: item.details,
     description: item.description,
@@ -25,7 +31,7 @@ const processWantedPersons = (data: ApiResponse): WantedPerson[] => {
 
 const createData = (endpoint: string, data: WantedPerson): Promise<WantedPerson> =>
   fetchData<WantedPerson>(endpoint, "POST", data);
-const readData = (endpoint: string): Promise<ApiResponse> => fetchData<ApiResponse>(endpoint);
+const readData = (endpoint: string): Promise<WantedPerson[]> => fetchData<WantedPerson[]>(endpoint);
 const updateData = (endpoint: string, data: WantedPerson): Promise<WantedPerson> =>
   fetchData<WantedPerson>(endpoint, "PUT", data);
 const deleteData = (endpoint: string): Promise<void> => fetchData<void>(endpoint, "DELETE");
@@ -73,4 +79,12 @@ export const missingPersons = {
     processWantedPersons(await readData("/missing_persons")),
   update: (data: WantedPerson) => updateData("/missing_persons", data),
   delete: () => deleteData("/missing_persons"),
+};
+
+export const caseOfTheWeek = {
+  create: (data: WantedPerson) => createData("/case_of_the_week", data),
+  read: async (): Promise<WantedPerson[]> =>
+    processWantedPersons(await readData("/case_of_the_week")),
+  update: (data: WantedPerson) => updateData("/case_of_the_week", data),
+  delete: () => deleteData("/case_of_the_week"),
 };

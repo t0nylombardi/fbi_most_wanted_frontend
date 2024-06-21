@@ -1,6 +1,4 @@
-// src/services/api.ts
-
-const BASE_URL = "https://your-api-domain.com";
+const BASE_URL = "http://localhost:3000";
 
 const handleResponse = async (response: Response): Promise<unknown> => {
   if (!response.ok) {
