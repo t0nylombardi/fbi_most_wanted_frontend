@@ -1,31 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import ImageCard from "./ImageCard";
 import { WantedPerson } from "../services/types";
-import Modal from "./Modal";
 
 interface ImageCardListProps {
   persons: WantedPerson[];
+  openModal: (person: WantedPerson) => void;
 }
 
-const ImageCardList = ({ persons }: ImageCardListProps) => {
-  const [activePerson, setActivePerson] = useState<WantedPerson | null>(null);
-
-  const openModal = (person: WantedPerson) => {
-    setActivePerson(person);
-  };
-
-  const closeModal = () => {
-    setActivePerson(null);
-  };
-
+const ImageCardList = ({ persons, openModal }: ImageCardListProps) => {
   return (
-    <div className="mx-auto grid gap-x-2 gap-y-1 grid-cols-5">
+    <div className="grid gap-x-2 gap-y-1 grid-cols-5">
       {persons.map(person => (
-        <button key={person.id} onClick={() => openModal(person)}>
-          <ImageCard image={person.images[0]} caption={false} />
-        </button>
+        <div key={person.id}>
+          <button onClick={() => openModal(person)}>
+            <ImageCard image={person.images[0]} caption={false} />
+          </button>
+        </div>
       ))}
-      {activePerson && <Modal person={activePerson} closeModal={closeModal} />}
     </div>
   );
 };

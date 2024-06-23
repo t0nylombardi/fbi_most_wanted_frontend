@@ -8,14 +8,25 @@ type WantedPersonProps = {
   person: WantedPerson;
   closeModal?: () => void;
   showCloseModal?: boolean;
+  modal?: boolean;
 };
 
-const SinglePersonCard = ({ person, closeModal, showCloseModal = false }: WantedPersonProps) => {
+const SinglePersonCard = ({
+  person,
+  closeModal,
+  showCloseModal = false,
+  modal = false,
+}: WantedPersonProps) => {
   return (
-    <div id="container" className="w-auto flex px-24 justify-center relative">
+    <div
+      id="container"
+      className={`${modal ? "w-[80rem] h-50" : ""} flex px-24 justify-center relative`}
+    >
       <div
         id="container"
-        className="m-12 p-12 bg-gray-800  border border-cyprus-900 rounded-2xl h-full w-full flex flex-row justify-around relative shadow-2xl"
+        className={`m-12 p-12 bg-gray-800  border border-cyprus-900 rounded-2xl h-full ${
+          modal ? "w-[55rem]" : ""
+        } flex flex-row justify-around relative shadow-2xl`}
       >
         {showCloseModal && (
           <button onClick={closeModal} className="absolute top-0 right-0 m-4 p-2 ">
