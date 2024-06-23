@@ -8,21 +8,19 @@ describe("ImageCard", () => {
   const image: Image = {
     large: "https://example.com/image.jpg",
     caption: "Test Caption",
-    original: "https://example.com/image.jpg",
-    thumb: "https://example.com/image.jpg",
   };
 
   test("renders the image with the correct src and alt attributes", () => {
-    const { getByAltText } = render(<ImageCard image={image} />);
-    const imgElement = getByAltText("card-image");
+    const { getByAltText } = render(<ImageCard image={image} caption={true} />);
+    const imgElement = getByAltText(image.caption ?? "");
 
     expect(imgElement).toBeInTheDocument();
     expect(imgElement).toHaveAttribute("src", image.large);
-    expect(imgElement).toHaveAttribute("alt", "card-image");
+    expect(imgElement).toHaveAttribute("alt", image.caption ?? "Image");
   });
 
   test("renders the image caption correctly", () => {
-    const { getByText } = render(<ImageCard image={image} />);
+    const { getByText } = render(<ImageCard image={image} caption={true} />);
     const captionElement = getByText(image.caption ?? "");
 
     expect(captionElement).toBeInTheDocument();
@@ -30,16 +28,14 @@ describe("ImageCard", () => {
   });
 
   test("applies the correct class names", () => {
-    const { container } = render(<ImageCard image={image} />);
+    const { container } = render(<ImageCard image={image} caption={true} />);
     const cardElement = container.firstChild;
 
     expect(cardElement).toHaveClass(
-      "relative flex flex-col h-full my-6 p-4 text-chilean-fire-500 bg-clip-border rounded-xl w-96",
+      "relative flex flex-col my-6 p-4 text-chilean-fire-500 bg-clip-border rounded-xl w-50",
     );
     expect(
-      container.querySelector(
-        "div.relative.m-4.h-full.overflow-hidden.text-chilean-fire-500.bg-clip-border.rounded-xl.bg-blue-gray-500",
-      ),
+      container.querySelector("div.relative.m-4.text-chilean-fire-500.bg-clip-border.rounded-xl"),
     ).toBeInTheDocument();
     expect(container.querySelector("p.text-white.text-lg.font-bold.mt-2")).toBeInTheDocument();
   });

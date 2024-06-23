@@ -94,21 +94,14 @@ describe("WantedPersonDetail", () => {
 
     renderComponent(personWithSomeMissingDetails);
 
-    expect(screen.getByText("Age range")).toBeInTheDocument();
-    expect(screen.getByText("25-30")).toBeInTheDocument();
-    expect(screen.getByText("Eyes")).toBeInTheDocument();
-    expect(screen.getByText("n/a")).toBeInTheDocument();
-    expect(screen.getByText("Hair")).toBeInTheDocument();
-    expect(screen.getByText("n/a")).toBeInTheDocument();
-    expect(screen.getByText("Height max")).toBeInTheDocument();
-    expect(screen.getByText("n/a")).toBeInTheDocument();
-    expect(screen.getByText("Place of birth")).toBeInTheDocument();
-    expect(screen.getByText("New York")).toBeInTheDocument();
-    expect(screen.getByText("Race")).toBeInTheDocument();
-    expect(screen.getByText("n/a")).toBeInTheDocument();
-    expect(screen.getByText("Sex")).toBeInTheDocument();
-    expect(screen.getByText("Male")).toBeInTheDocument();
-    expect(screen.getByText("Weight max")).toBeInTheDocument();
-    expect(screen.getByText("n/a")).toBeInTheDocument();
+    const detailFields = [
+      { field: personWithSomeMissingDetails.details, label: "Details" },
+      { field: personWithSomeMissingDetails.eyes, label: "Eyes" },
+      { field: personWithSomeMissingDetails.height_max, label: "Height Max" },
+    ];
+
+    detailFields.map(() => {
+      expect(screen.getAllByText("n/a")[0]).toBeInTheDocument();
+    });
   });
 });

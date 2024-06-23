@@ -1,8 +1,6 @@
 export interface Image {
   caption: string | null | undefined;
   large: string | null | undefined;
-  original: string | null | undefined;
-  thumb: string | null | undefined;
 }
 
 export interface WantedPerson {

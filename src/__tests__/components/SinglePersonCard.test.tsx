@@ -18,8 +18,6 @@ const mockPerson: WantedPerson = {
     {
       large: "image-url",
       caption: "John Doe",
-      thumb: "image-url",
-      original: "image-url",
     },
   ],
   age_range: "25-30",
@@ -45,7 +43,7 @@ describe("SinglePersonCard", () => {
 
   test("renders image card", () => {
     render(<SinglePersonCard person={mockPerson} />);
-    expect(screen.getByAltText("card-image")).toBeInTheDocument();
+    expect(screen.getByAltText(mockPerson.images[0].caption as string)).toBeInTheDocument();
   });
 
   test("renders person details", () => {
@@ -70,6 +68,6 @@ describe("SinglePersonCard", () => {
     };
 
     render(<SinglePersonCard person={personWithMissingDetails} />);
-    expect(screen.getAllByText("n/a")).toHaveLength(5);
+    expect(screen.getAllByText("n/a")).toHaveLength(7);
   });
 });

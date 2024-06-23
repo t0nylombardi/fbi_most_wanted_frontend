@@ -39,14 +39,12 @@ const WantedPersonDetails: React.FC<WantedPersonDetailsProps> = ({ person }) => 
     Object.values(details).every(value => !value) ? (
       <EmptyDetails />
     ) : (
-      <table className="table-fit w-full h-full text-xl text-chilean-fire-500">
+      <table id="details" className="table-fit w-full h-full text-xl text-chilean-fire-500">
         <tbody>
           {detailsFromObj.map(key => (
             <tr key={key}>
               <td className="px-8">{capitalize(removeSeparator(key))}</td>
-              <td className="px-8">
-                {capitalize(details[key] != null ? details[key]?.toString() : "n/a") || "n/a"}
-              </td>
+              <td className="px-8">{capitalize(details[key]?.toString()) || "n/a"}</td>
             </tr>
           ))}
         </tbody>

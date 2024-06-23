@@ -3,16 +3,21 @@ import { Image } from "../services/types";
 
 interface ImageCardProps {
   image: Image;
+  caption: boolean;
 }
 
-const ImageCard = ({ image }: ImageCardProps) => {
+const ImageCard = ({ image, caption = false }: ImageCardProps) => {
   return (
-    <div className="relative flex flex-col h-full my-6 p-4 text-chilean-fire-500 bg-clip-border rounded-xl w-96">
-      <div className="relative  m-4 h-full overflow-hidden text-chilean-fire-500  bg-clip-border rounded-xl bg-blue-gray-500">
-        <img src={image.large?.toString()} alt="card-image" />
+    <div className="relative flex flex-col my-6 p-4 text-chilean-fire-500 bg-clip-border rounded-xl w-50">
+      <div className="relative m-4 text-chilean-fire-500 bg-clip-border rounded-xl">
+        <img
+          className="object-cover object-center w-full h-[20rem] rounded-lg"
+          src={image.large?.toString()}
+          alt={image.caption || "Image"}
+        />
       </div>
       <div className="flex flex-col items-center justify-center">
-        <p className="text-white text-lg font-bold mt-2">{image.caption}</p>
+        {caption && <p className="text-white text-lg font-bold mt-2">{image.caption}</p>}
       </div>
     </div>
   );
