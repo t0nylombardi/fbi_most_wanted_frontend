@@ -11,10 +11,21 @@ type WantedPersonDetailsProps = {
  * @param {number} inches - The height in inches.
  * @returns {string} The height in feet and inches.
  */
-const convertHeightToFeet = (inches: number): string => {
+const convertHeightToFeet = (inches: number): string | null => {
+  if (inches === 0) return null;
   const feet = Math.floor(inches / 12);
   const remainingInches = inches % 12;
   return `${feet}ft ${remainingInches}in`;
+};
+
+/**
+ * Converts weight into a string.
+ * @param {number} weight - The weight in pounds.
+ * @returns {string | null} The weight in pounds.
+ */
+const convertWeight = (weight: number): string | null => {
+  if (weight === 0) return null;
+  return `${weight} lbs`;
 };
 
 /**
@@ -46,7 +57,7 @@ const WantedPersonDetails: React.FC<WantedPersonDetailsProps> = ({ person }) => 
       if (key === "height_max" && typeof value === "number") {
         value = convertHeightToFeet(value);
       } else if (key === "weight_max" && typeof value === "number") {
-        value = `${value} lbs`;
+        convertWeight(value);
       }
       return { [key]: value };
     })
