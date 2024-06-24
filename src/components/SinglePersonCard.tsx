@@ -3,6 +3,7 @@ import { WantedPerson } from "../services/types";
 import ImageCard from "./ImageCard";
 import WantedPersonDetails from "./WantedPersonDetails";
 import PersonDescription from "./PersonDescription";
+import Button from "./Button";
 
 type WantedPersonProps = {
   person: WantedPerson;
@@ -18,16 +19,19 @@ const SinglePersonCard = ({
   modal = false,
 }: WantedPersonProps) => {
   return (
-    <div id="container" className={`flex justify-center relative`}>
+    <div
+      id="container"
+      className={`flex flex-col justify-center relative bg-gray-800 border border-cyprus-700 shadow-2xl rounded-2xl `}
+    >
       <div
         id="container"
-        className={`flex flex-row justify-around relative shadow-2xl p-12 bg-gray-800  border border-cyprus-900 rounded-2xl ${
-          modal ? "w-[55rem]" : ""
+        className={`flex flex-row justify-around relative p-4 bg-gray-800 rounded-2xl ${
+          modal ? "w-[60rem]" : ""
         }`}
       >
         {showCloseModal && (
           <button onClick={closeModal} className="absolute top-0 right-0 m-4 p-2 ">
-            <span className="bg-transparent text-white h-6 w-6 text-2xl block outline-none focus:outline-none">
+            <span className="bg-transparent text-chilean-fire-500 h-10 w-10 text-3xl block outline-none focus:outline-none">
               ×
             </span>
           </button>
@@ -40,6 +44,10 @@ const SinglePersonCard = ({
           </div>
           <PersonDescription description={person.description} details={person.details} />
         </div>
+      </div>
+      <div className="flex flex-row justify-center pb-8">
+        <Button text="edit" />
+        <Button text="remove" />
       </div>
     </div>
   );
