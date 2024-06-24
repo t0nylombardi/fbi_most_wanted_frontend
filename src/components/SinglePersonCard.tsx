@@ -18,15 +18,12 @@ const SinglePersonCard = ({
   modal = false,
 }: WantedPersonProps) => {
   return (
-    <div
-      id="container"
-      className={`${modal ? "w-[80rem] h-50" : ""} flex px-24 justify-center relative`}
-    >
+    <div id="container" className={`flex justify-center relative`}>
       <div
         id="container"
-        className={`m-12 p-12 bg-gray-800  border border-cyprus-900 rounded-2xl h-full ${
+        className={`flex flex-row justify-around relative shadow-2xl p-12 bg-gray-800  border border-cyprus-900 rounded-2xl ${
           modal ? "w-[55rem]" : ""
-        } flex flex-row justify-around relative shadow-2xl`}
+        }`}
       >
         {showCloseModal && (
           <button onClick={closeModal} className="absolute top-0 right-0 m-4 p-2 ">

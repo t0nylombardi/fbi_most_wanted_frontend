@@ -25,8 +25,8 @@ const Modal = ({ closeModal, person }: ModalProps) => {
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center outline-none focus:outline-none">
-        <div ref={modalRef} className="w-[rem] p-4 rounded-lg">
+      <div className="modal fixed inset-0 z-50 flex items-center justify-center outline-none focus:outline-none">
+        <div role="dialog" ref={modalRef} className="p-4 rounded-lg">
           <SinglePersonCard
             person={person}
             closeModal={closeModal}
@@ -35,7 +35,7 @@ const Modal = ({ closeModal, person }: ModalProps) => {
           />
         </div>
       </div>
-      <div className="opacity-85 fixed inset-0 z-40 bg-black"></div>
+      <div id="modal-bg" className="opacity-85 fixed inset-0 z-40 bg-black"></div>
     </>
   );
 };
