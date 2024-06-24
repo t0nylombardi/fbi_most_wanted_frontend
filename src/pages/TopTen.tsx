@@ -33,6 +33,13 @@ const TopTen = () => {
     setActivePerson(null);
   };
 
+  const removeWantedPerson = async (id: string) => {
+    await tenMostWanted.delete(id);
+    const updatedPersons = persons.filter(person => person.id !== id);
+    setPersons(updatedPersons);
+    closeModal();
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
@@ -42,7 +49,13 @@ const TopTen = () => {
         Top Ten Most Wanted
       </h1>
       <ImageCardList persons={persons} openModal={openModal} />
-      {activePerson && <Modal person={activePerson} closeModal={closeModal} />}
+      {activePerson && (
+        <Modal
+          person={activePerson}
+          closeModal={closeModal}
+          removeWantedPerson={() => removeWantedPerson(activePerson.id)}
+        />
+      )}
     </PageWrapper>
   );
 };

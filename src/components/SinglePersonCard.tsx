@@ -10,6 +10,7 @@ type WantedPersonProps = {
   closeModal?: () => void;
   showCloseModal?: boolean;
   modal?: boolean;
+  removeWantedPerson?: (id: string) => void;
 };
 
 const SinglePersonCard = ({
@@ -17,6 +18,7 @@ const SinglePersonCard = ({
   closeModal,
   showCloseModal = false,
   modal = false,
+  removeWantedPerson,
 }: WantedPersonProps) => {
   return (
     <div
@@ -46,8 +48,8 @@ const SinglePersonCard = ({
         </div>
       </div>
       <div className="flex flex-row justify-center pb-8">
-        <Button text="edit" />
-        <Button text="remove" />
+        <Button text="edit" onClick={() => {}} />
+        <Button text="remove" onClick={() => removeWantedPerson && removeWantedPerson(person.id)} />
       </div>
     </div>
   );

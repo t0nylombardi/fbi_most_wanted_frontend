@@ -5,9 +5,10 @@ import SinglePersonCard from "./SinglePersonCard";
 interface ModalProps {
   closeModal: () => void;
   person: WantedPerson;
+  removeWantedPerson: () => void;
 }
 
-const Modal = ({ closeModal, person }: ModalProps) => {
+const Modal = ({ closeModal, person, removeWantedPerson }: ModalProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -32,6 +33,7 @@ const Modal = ({ closeModal, person }: ModalProps) => {
             closeModal={closeModal}
             showCloseModal={true}
             modal={true}
+            removeWantedPerson={removeWantedPerson}
           />
         </div>
       </div>

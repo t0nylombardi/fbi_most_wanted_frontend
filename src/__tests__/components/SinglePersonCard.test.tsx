@@ -1,25 +1,53 @@
 // src/components/SinglePersonCard.test.tsx
 
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import SinglePersonCard from "../../components/SinglePersonCard";
 import { WantedPerson } from "../../services/types";
 
+// Mock the ImageCard component
+jest.mock(
+  "../../components/ImageCard",
+  () =>
+    ({ image, caption }: { image: { large: string; caption: string }; caption: boolean }) =>
+      <div data-testid="image-card">{caption && <p>{image.caption}</p>}</div>,
+);
+
+// Mock the WantedPersonDetails component
+jest.mock("../../components/WantedPersonDetails", () => ({ person }: { person: WantedPerson }) => (
+  <div data-testid="wanted-person-details">{person.title}</div>
+));
+
+// Mock the PersonDescription component
+jest.mock(
+  "../../components/PersonDescription",
+  () =>
+    ({ description, details }: { description: string | null; details: string | null }) =>
+      <div data-testid="person-description">{description || details}</div>,
+);
+
+// Mock the Button component
+jest.mock(
+  "../../components/Button",
+  () =>
+    ({ text, onClick }: { text: string; onClick: () => void }) =>
+      (
+        <button data-testid={text} onClick={onClick}>
+          {text}
+        </button>
+      ),
+);
+
 const mockPerson: WantedPerson = {
   id: "1",
-  details: "Details of John Doe",
-  height_min: 170,
-  url: "url",
-  weight_min: 70,
   title: "John Doe",
-  description: "Description of Wanted Person",
-  images: [
-    {
-      large: "image-url",
-      caption: "John Doe",
-    },
-  ],
+  details: "Details of Wanted Person",
+  height_min: 170,
+  weight_min: 70,
+  url: "url",
+  description: "Description of a Wanted Person",
+  images: [{ large: "image-url-1", caption: "This is a caption" }],
   age_range: "25-30",
   eyes: "Blue",
   hair: "Blonde",
@@ -31,43 +59,42 @@ const mockPerson: WantedPerson = {
 };
 
 describe("SinglePersonCard", () => {
-  test("renders person title", () => {
-    render(<SinglePersonCard person={mockPerson} />);
-    expect(screen.getAllByText("John Doe")[0]).toBeInTheDocument();
+  let closeModal: jest.Mock;
+  let removeWantedPerson: jest.Mock;
+
+  beforeEach(() => {
+    closeModal = jest.fn();
+    removeWantedPerson = jest.fn();
   });
 
-  test.skip("renders person description", () => {
+  test("renders the SinglePersonCard with provided person data", () => {
     render(<SinglePersonCard person={mockPerson} />);
-    expect(screen.getByText("Description of Wanted Person")).toBeInTheDocument();
+    expect(screen.queryAllByText(mockPerson.title?.toString() || "")[0]).toBeInTheDocument();
+    expect(screen.getByTestId("image-card")).toBeInTheDocument();
+    expect(screen.getByTestId("wanted-person-details")).toBeInTheDocument();
+    expect(screen.getByTestId("person-description")).toBeInTheDocument();
   });
 
-  test("renders image card", () => {
-    render(<SinglePersonCard person={mockPerson} />);
-    expect(screen.getByAltText(mockPerson.images[0].caption as string)).toBeInTheDocument();
+  test("renders the close button when showCloseModal is true", () => {
+    render(<SinglePersonCard person={mockPerson} showCloseModal={true} closeModal={closeModal} />);
+    expect(screen.getByText("×")).toBeInTheDocument();
   });
 
-  test("renders person details", () => {
-    render(<SinglePersonCard person={mockPerson} />);
-    expect(screen.getByText("Age range")).toBeInTheDocument();
-    expect(screen.getByText("25-30")).toBeInTheDocument();
-    expect(screen.getByText("Eyes")).toBeInTheDocument();
-    expect(screen.getByText("Blue")).toBeInTheDocument();
+  test("calls closeModal when the close button is clicked", () => {
+    render(<SinglePersonCard person={mockPerson} showCloseModal={true} closeModal={closeModal} />);
+    fireEvent.click(screen.getByText("×"));
+    expect(closeModal).toHaveBeenCalled();
   });
 
-  test('renders "n/a" for missing details', () => {
-    const personWithMissingDetails = {
-      ...mockPerson,
-      age_range: "1-99",
-      eyes: "",
-      hair: "",
-      height_max: null,
-      place_of_birth: "",
-      race: "",
-      sex: "",
-      weight_max: null,
-    };
+  test("calls removeWantedPerson when the remove button is clicked", () => {
+    render(<SinglePersonCard person={mockPerson} removeWantedPerson={removeWantedPerson} />);
+    fireEvent.click(screen.getByTestId("remove"));
+    expect(removeWantedPerson).toHaveBeenCalledWith(mockPerson.id);
+  });
 
-    render(<SinglePersonCard person={personWithMissingDetails} />);
-    expect(screen.getAllByText("n/a")).toHaveLength(7);
+  test("does not call removeWantedPerson when the remove button is clicked and removeWantedPerson is not provided", () => {
+    render(<SinglePersonCard person={mockPerson} />);
+    fireEvent.click(screen.getByTestId("remove"));
+    expect(removeWantedPerson).not.toHaveBeenCalled();
   });
 });
