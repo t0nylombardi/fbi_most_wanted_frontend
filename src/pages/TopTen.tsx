@@ -4,13 +4,13 @@ import PageWrapper from "../components/PageWrapper";
 import { tenMostWanted } from "../services/endpoints";
 import ImageCardList from "../components/ImageCardList";
 import Modal from "../components/Modal";
-import Form from "../components/WantedEditForm/form";
 
 const TopTen = () => {
   const [persons, setPersons] = useState<WantedPerson[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [activePerson, setActivePerson] = useState<WantedPerson | null>(null);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   useEffect(() => {
     const getData = async () => {
@@ -28,18 +28,16 @@ const TopTen = () => {
 
   const openModal = (person: WantedPerson) => {
     setActivePerson(person);
+    setIsEditing(false);
   };
 
   const closeModal = () => {
     setActivePerson(null);
   };
 
-  const editWantedPerson = async (id: string) => {
+  const editWantedPerson = (id: string) => {
     console.log("Edit person with id: ", id);
-    // remove inner modal
-    closeModal();
-    // open edit form
-    <Form person={activePerson} />;
+    setIsEditing(true);
   };
 
   const removeWantedPerson = async (id: string) => {
@@ -57,15 +55,19 @@ const TopTen = () => {
       <h1 className="mx-[1rem] px-[1rem] text-[3.25rem] text-chilean-fire-500 uppercase">
         Top Ten Most Wanted
       </h1>
-      <ImageCardList persons={persons} openModal={openModal} />
-      {activePerson && (
-        <Modal
-          person={activePerson}
-          closeModal={closeModal}
-          editWantedPerson={() => editWantedPerson(activePerson.id)}
-          removeWantedPerson={() => removeWantedPerson(activePerson.id)}
-        />
-      )}
+
+      <>
+        <ImageCardList persons={persons} openModal={openModal} />
+        {activePerson && (
+          <Modal
+            person={activePerson}
+            closeModal={closeModal}
+            isEditing={isEditing}
+            editWantedPerson={() => editWantedPerson(activePerson.id)}
+            removeWantedPerson={() => removeWantedPerson(activePerson.id)}
+          />
+        )}
+      </>
     </PageWrapper>
   );
 };

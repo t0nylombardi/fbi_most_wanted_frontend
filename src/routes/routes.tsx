@@ -1,3 +1,4 @@
+import React from "react";
 import type { RouteObject } from "react-router";
 import App from "../App";
 import Home from "../pages/Home";
