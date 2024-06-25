@@ -4,6 +4,7 @@ import PageWrapper from "../components/PageWrapper";
 import { tenMostWanted } from "../services/endpoints";
 import ImageCardList from "../components/ImageCardList";
 import Modal from "../components/Modal";
+import Form from "../components/WantedEditForm/form";
 
 const TopTen = () => {
   const [persons, setPersons] = useState<WantedPerson[]>([]);
@@ -33,6 +34,14 @@ const TopTen = () => {
     setActivePerson(null);
   };
 
+  const editWantedPerson = async (id: string) => {
+    console.log("Edit person with id: ", id);
+    // remove inner modal
+    closeModal();
+    // open edit form
+    <Form person={activePerson} />;
+  };
+
   const removeWantedPerson = async (id: string) => {
     await tenMostWanted.delete(id);
     const updatedPersons = persons.filter(person => person.id !== id);
@@ -53,6 +62,7 @@ const TopTen = () => {
         <Modal
           person={activePerson}
           closeModal={closeModal}
+          editWantedPerson={() => editWantedPerson(activePerson.id)}
           removeWantedPerson={() => removeWantedPerson(activePerson.id)}
         />
       )}

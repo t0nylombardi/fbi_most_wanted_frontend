@@ -10,6 +10,7 @@ type WantedPersonProps = {
   closeModal?: () => void;
   showCloseModal?: boolean;
   modal?: boolean;
+  editWantedPerson?: (id: string) => void;
   removeWantedPerson?: (id: string) => void;
 };
 
@@ -18,15 +19,16 @@ const SinglePersonCard = ({
   closeModal,
   showCloseModal = false,
   modal = false,
+  editWantedPerson,
   removeWantedPerson,
 }: WantedPersonProps) => {
   return (
     <div
-      id="container"
+      id="single-person-card"
       className={`flex flex-col justify-center relative bg-gray-800 border border-cyprus-700 shadow-2xl rounded-2xl `}
     >
       <div
-        id="container"
+        id="inner-container"
         className={`flex flex-row justify-around relative p-4 bg-gray-800 rounded-2xl ${
           modal ? "w-[60rem]" : ""
         }`}
@@ -48,7 +50,7 @@ const SinglePersonCard = ({
         </div>
       </div>
       <div className="flex flex-row justify-center pb-8">
-        <Button text="edit" onClick={() => {}} />
+        <Button text="edit" onClick={() => editWantedPerson && editWantedPerson(person.id)} />
         <Button text="remove" onClick={() => removeWantedPerson && removeWantedPerson(person.id)} />
       </div>
     </div>

@@ -5,10 +5,11 @@ import SinglePersonCard from "./SinglePersonCard";
 interface ModalProps {
   closeModal: () => void;
   person: WantedPerson;
+  editWantedPerson: (id: string) => void;
   removeWantedPerson: () => void;
 }
 
-const Modal = ({ closeModal, person, removeWantedPerson }: ModalProps) => {
+const Modal = ({ closeModal, person, editWantedPerson, removeWantedPerson }: ModalProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -19,6 +20,7 @@ const Modal = ({ closeModal, person, removeWantedPerson }: ModalProps) => {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -33,6 +35,7 @@ const Modal = ({ closeModal, person, removeWantedPerson }: ModalProps) => {
             closeModal={closeModal}
             showCloseModal={true}
             modal={true}
+            editWantedPerson={editWantedPerson}
             removeWantedPerson={removeWantedPerson}
           />
         </div>
