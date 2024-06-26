@@ -22,6 +22,7 @@ const processWantedPersons = (data: WantedPerson[]): WantedPerson[] => {
     url: item.url,
     weight_max: item.weight_max,
     weight_min: item.weight_min,
+    modified: item.modified,
   }));
 };
 

@@ -4,6 +4,7 @@ import ImageCard from "./ImageCard";
 import WantedPersonDetails from "./WantedPersonDetails";
 import PersonDescription from "./PersonDescription";
 import Button from "./Button";
+import { capitalize, removeSeparator } from "../utils/stringUtils";
 
 type WantedPersonProps = {
   person: WantedPerson;
@@ -42,7 +43,9 @@ const SinglePersonCard = ({
         )}
         <ImageCard image={person.images[0]} caption={true} />
         <div className="flex flex-col justify-around w-full sm:w-[70%] md:w-[60%] lg:w-[50%]">
-          <h1 className="text-white font-bold text-3xl mt-6 mb-8">{person.title}</h1>
+          <h1 className="text-white font-bold text-3xl mt-6 mb-8">
+            {capitalize(removeSeparator(person.title || ""))}
+          </h1>
           <div id="details" className="flex flex-wrap justify-start items-center gap-4">
             <WantedPersonDetails person={person} />
           </div>

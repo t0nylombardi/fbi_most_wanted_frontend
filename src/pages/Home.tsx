@@ -16,6 +16,12 @@ const Home: React.FC = () => {
     const getData = async () => {
       try {
         const result = await wanted.read();
+        // filter modified date by oldest to newest
+        result.sort((a, b) => {
+          const dateA = new Date(String(a.modified)).getTime();
+          const dateB = new Date(String(b.modified)).getTime();
+          return dateA - dateB;
+        });
         setPersons(result);
         setLoading(false);
       } catch (err) {

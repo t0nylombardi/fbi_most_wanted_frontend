@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = "http://localhost:3000/api/v1";
 
 const handleResponse = async (response: Response): Promise<unknown> => {
   if (!response.ok) {
