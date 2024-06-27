@@ -9,7 +9,7 @@ interface ImageCardListProps {
 
 const ImageCardList = ({ persons, openModal }: ImageCardListProps) => {
   return (
-    <div className="grid gap-x-2 gap-y-1 grid-cols-5">
+    <div className="grid gap-4 grid-cols-5">
       {persons.map(person => (
         <div key={person.id} className="flex justify-center items-center">
           <button onClick={() => openModal(person)}>

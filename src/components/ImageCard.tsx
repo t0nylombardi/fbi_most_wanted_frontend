@@ -11,7 +11,7 @@ const ImageCard = ({ image, caption = false }: ImageCardProps) => {
     <div className="relative flex flex-col my-6 p-4 text-chilean-fire-500 bg-clip-border rounded-xl w-50">
       <div className="relative m-4 text-chilean-fire-500 bg-clip-border rounded-xl">
         <img
-          className="object-cover object-center w-full h-[20rem] rounded-lg"
+          className="object-cover object-center w-full h-[25rem] rounded-lg"
           src={image.large?.toString()}
           alt={image.caption || "Image"}
         />

@@ -28,6 +28,7 @@ describe("ImageCardList", () => {
       race: "Caucasian",
       sex: "Male",
       weight_max: 275,
+      subjects: ["Rick", "Sanchez"],
     },
     {
       id: "2",
@@ -51,6 +52,7 @@ describe("ImageCardList", () => {
       race: "Caucasian",
       sex: "Female",
       weight_max: 75,
+      subjects: ["Diane", "Nguyen"],
     },
   ];
 

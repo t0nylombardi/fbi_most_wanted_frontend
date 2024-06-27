@@ -25,6 +25,7 @@ describe("WantedPersonDetail", () => {
       race: "",
       sex: "",
       weight_max: 0,
+      subjects: [],
     };
 
     renderComponent(emptyPerson);
@@ -50,6 +51,7 @@ describe("WantedPersonDetail", () => {
       race: "Caucasian",
       sex: "Male",
       weight_max: 75,
+      subjects: [],
     };
 
     const feet = Math.floor(personWithDetails.height_max || 0 / 12);
@@ -96,6 +98,7 @@ describe("WantedPersonDetail", () => {
       race: "Caucasian",
       sex: "Male",
       weight_max: 75,
+      subjects: [],
     };
 
     renderComponent(personWithSomeMissingDetails);

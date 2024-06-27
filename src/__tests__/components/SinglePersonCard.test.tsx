@@ -56,6 +56,7 @@ const mockPerson: WantedPerson = {
   race: "Caucasian",
   sex: "Male",
   weight_max: 75,
+  subjects: ["John", "Doe"],
 };
 
 describe("SinglePersonCard", () => {

@@ -23,6 +23,7 @@ const processWantedPersons = (data: WantedPerson[]): WantedPerson[] => {
     weight_max: item.weight_max,
     weight_min: item.weight_min,
     modified: item.modified,
+    subjects: item.subjects,
   }));
 };
 
@@ -46,10 +47,11 @@ export const tenMostWanted = {
 };
 
 export const wanted = {
-  create: (data: WantedPerson) => createData("/wanted", data),
-  read: async (): Promise<WantedPerson[]> => processWantedPersons(await readData("/wanted")),
-  update: (data: WantedPerson) => updateData("/wanted", data),
-  delete: (id: string) => deleteData("/wanted", id),
+  create: (data: WantedPerson) => createData("/default-all-pages", data),
+  read: async (): Promise<WantedPerson[]> =>
+    processWantedPersons(await readData("/default-all-pages")),
+  update: (data: WantedPerson) => updateData("/default-all-pages", data),
+  delete: (id: string) => deleteData("/default-all-pages", id),
 };
 
 export const terrorist = {

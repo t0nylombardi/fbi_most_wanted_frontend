@@ -1,36 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useQuery } from "react-query";
 import { WantedPerson } from "../services/types";
 import PageWrapper from "../components/PageWrapper";
 import { wanted } from "../services/endpoints";
 import ImageCardList from "../components/ImageCardList";
 import Modal from "../components/Modal";
+import LoadingScreen from "../components/LoadingScreen";
+import PaginationControlls from "../components/PaginationControlls";
+
+const ITEMS_PER_PAGE = 20;
+
+const fetchWantedPersons = async () => {
+  const result = await wanted.read();
+  result.sort((a, b) => {
+    const dateA = new Date(String(a.modified)).getTime();
+    const dateB = new Date(String(b.modified)).getTime();
+    return dateA - dateB;
+  });
+  return result;
+};
 
 const Home: React.FC = () => {
-  const [persons, setPersons] = useState<WantedPerson[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
   const [activePerson, setActivePerson] = useState<WantedPerson | null>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const result = await wanted.read();
-        // filter modified date by oldest to newest
-        result.sort((a, b) => {
-          const dateA = new Date(String(a.modified)).getTime();
-          const dateB = new Date(String(b.modified)).getTime();
-          return dateA - dateB;
-        });
-        setPersons(result);
-        setLoading(false);
-      } catch (err) {
-        setError((err as Error).message);
-        setLoading(false);
-      }
-    };
-    getData();
-  }, []);
+  const {
+    data: persons = [],
+    isLoading = true,
+    error,
+  } = useQuery<WantedPerson[]>(
+    "wantedPersons",
+    fetchWantedPersons,
+    { staleTime: 3600 * 1000 }, // 1 hour
+  );
 
   const openModal = (person: WantedPerson) => {
     setActivePerson(person);
@@ -42,25 +45,41 @@ const Home: React.FC = () => {
   };
 
   const editWantedPerson = (id: string) => {
-    console.log("Edit person with id: ", id);
+    console.log("Editing person with id: ", id);
     setIsEditing(true);
   };
 
   const removeWantedPerson = async (id: string) => {
     await wanted.delete(id);
-    const updatedPersons = persons.filter(person => person.id !== id);
-    setPersons(updatedPersons);
-    closeModal();
+    // Refetch data or update cache manually
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  const handleNextPage = () => {
+    setCurrentPage(prevPage => prevPage + 1);
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage(prevPage => Math.max(prevPage - 1, 1));
+  };
+
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const currentPersons = persons.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+  if (isLoading) return <LoadingScreen />;
+  if (error) return <div>Error: {(error as Error).message}</div>;
 
   return (
     <PageWrapper>
-      <h1 className="mx-[6rem] px-[3.9rem] text-4xl text-chilean-fire-500 ">CASE OF THE WEEK</h1>
+      <PaginationControlls
+        handlePrevPage={handlePrevPage}
+        currentPage={currentPage}
+        handleNextPage={handleNextPage}
+        startIndex={startIndex}
+        itemsPerPage={ITEMS_PER_PAGE}
+        personsLength={persons.length}
+      />
       <>
-        <ImageCardList persons={persons} openModal={openModal} />
+        <ImageCardList persons={currentPersons} openModal={openModal} />
         {activePerson && (
           <Modal
             person={activePerson}

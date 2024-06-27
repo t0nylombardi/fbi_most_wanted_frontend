@@ -20,7 +20,8 @@ export interface WantedPerson {
   url: string | null;
   weight_max: number | null;
   weight_min: number | null;
-  [key: string]: string | number | null | undefined | Image[];
+  subjects: string[] | null;
+  [key: string]: string | string[] | number | null | undefined | Image[];
   [key: number]: string | number | null | undefined | Image[];
 }
 

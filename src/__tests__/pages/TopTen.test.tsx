@@ -35,6 +35,7 @@ const mockPersons: WantedPerson[] = [
     race: "Caucasian",
     sex: "Male",
     weight_max: 75,
+    subjects: ["John", "Doe"],
   },
   {
     id: "2",
@@ -58,6 +59,7 @@ const mockPersons: WantedPerson[] = [
     race: "Caucasian",
     sex: "Male",
     weight_max: 75,
+    subjects: ["Jane", "Doe"],
   },
 ];
 
