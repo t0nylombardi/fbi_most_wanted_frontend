@@ -21,8 +21,6 @@ describe("LoadingScreen", () => {
       return loadingMessages.includes(content);
     }).textContent;
 
-    console.log("firstMessage: ", firstMessage);
-
     act(() => {
       jest.advanceTimersByTime(2000);
     });
@@ -31,7 +29,6 @@ describe("LoadingScreen", () => {
       return loadingMessages.includes(content);
     }).textContent;
 
-    console.log("secondMessage", secondMessage);
     expect(firstMessage).not.toBe(secondMessage);
   });
 
