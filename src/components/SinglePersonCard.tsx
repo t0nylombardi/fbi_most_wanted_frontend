@@ -31,7 +31,7 @@ const SinglePersonCard = ({
       <div
         id="inner-container"
         className={`flex flex-row justify-around relative p-4 bg-gray-800 rounded-2xl ${
-          modal ? "w-[60rem]" : ""
+          modal ? "w-[80rem]" : ""
         }`}
       >
         {showCloseModal && (

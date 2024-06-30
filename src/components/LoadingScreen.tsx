@@ -20,7 +20,13 @@ const LoadingScreen = () => {
     <div className="">
       <div className="flex items-center justify-center h-screen">
         <div className="flex flex-col items-center justify-center">
-          <p className="text-chilean-fire-500 text-4xl font-bold mt-4">{loadingMessage}</p>
+          <p
+            className="text-chilean-fire-500 text-4xl font-bold mt-4"
+            data-testid="loading-message"
+            role="status"
+          >
+            {loadingMessage}
+          </p>
         </div>
       </div>
     </div>

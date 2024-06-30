@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { WantedPerson } from "../services/types";
 import PageWrapper from "../components/PageWrapper";
 import { wanted } from "../services/endpoints";
@@ -29,11 +29,10 @@ const Home: React.FC = () => {
     data: persons = [],
     isLoading = true,
     error,
-  } = useQuery<WantedPerson[]>(
-    "wantedPersons",
-    fetchWantedPersons,
-    { staleTime: 3600 * 1000 }, // 1 hour
-  );
+  } = useQuery<WantedPerson[], Error>({
+    queryKey: ["wantedPersons"],
+    queryFn: fetchWantedPersons,
+  });
 
   const openModal = (person: WantedPerson) => {
     setActivePerson(person);
@@ -52,6 +51,11 @@ const Home: React.FC = () => {
   const removeWantedPerson = async (id: string) => {
     await wanted.delete(id);
     // Refetch data or update cache manually
+    persons.splice(
+      persons.findIndex(person => person.id === id),
+      1,
+    );
+    closeModal();
   };
 
   const handleNextPage = () => {

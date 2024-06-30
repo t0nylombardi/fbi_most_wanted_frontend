@@ -29,9 +29,8 @@ const processWantedPersons = (data: WantedPerson[]): WantedPerson[] => {
 
 const createData = (endpoint: string, data: WantedPerson): Promise<WantedPerson> =>
   fetchData<WantedPerson>(endpoint, "POST", data);
-const readData = (endpoint: string): Promise<WantedPerson[]> => {
-  console.log("endpoint: ", fetchData<WantedPerson[]>(endpoint));
-  return fetchData<WantedPerson[]>(endpoint);
+const readData = async (endpoint: string): Promise<WantedPerson[]> => {
+  return await fetchData<WantedPerson[]>(endpoint);
 };
 const updateData = (endpoint: string, data: WantedPerson): Promise<WantedPerson> =>
   fetchData<WantedPerson>(endpoint, "PUT", data);
@@ -47,11 +46,11 @@ export const tenMostWanted = {
 };
 
 export const wanted = {
-  create: (data: WantedPerson) => createData("/default-all-pages", data),
+  create: (data: WantedPerson) => createData("/default_all_pages", data),
   read: async (): Promise<WantedPerson[]> =>
-    processWantedPersons(await readData("/default-all-pages")),
-  update: (data: WantedPerson) => updateData("/default-all-pages", data),
-  delete: (id: string) => deleteData("/default-all-pages", id),
+    processWantedPersons(await readData("/default_all_pages")),
+  update: (data: WantedPerson) => updateData("/default_all_pages", data),
+  delete: (id: string) => deleteData("/default_all_pages", id),
 };
 
 export const terrorist = {

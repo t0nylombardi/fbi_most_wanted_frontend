@@ -7,29 +7,45 @@ import { loadingMessages } from "../../services/constants";
 describe("LoadingScreen", () => {
   jest.useFakeTimers();
 
-  test("renders loading message from the list", () => {
+  test("renders loading message", () => {
     render(<LoadingScreen />);
-    const messageElement = screen.getByText(content => {
-      return loadingMessages.includes(content);
-    });
-    expect(messageElement).toBeInTheDocument();
+    const loadingMessageElement = screen.getByTestId("loading-message");
+    expect(loadingMessageElement).toBeInTheDocument();
+    expect(loadingMessages).toContain(loadingMessageElement.textContent);
   });
 
   test("updates loading message every 2 seconds", () => {
-    render(<LoadingScreen />);
-    const firstMessage = screen.getByText(content => {
-      return loadingMessages.includes(content);
-    }).textContent;
+    jest.useFakeTimers();
 
+    render(<LoadingScreen />);
+
+    const loadingMessageElement = screen.getByTestId("loading-message");
+
+    // Get the initial loading message
+    const initialMessage = loadingMessageElement.textContent;
+    expect(loadingMessages).toContain(initialMessage);
+
+    // Advance timers by 2 seconds within act
     act(() => {
       jest.advanceTimersByTime(2000);
     });
 
-    const secondMessage = screen.getByText(content => {
-      return loadingMessages.includes(content);
-    }).textContent;
+    // Expect the loading message to be different
+    const newMessage = loadingMessageElement.textContent;
+    expect(loadingMessages).toContain(newMessage);
+    expect(newMessage).not.toBe(initialMessage);
 
-    expect(firstMessage).not.toBe(secondMessage);
+    // Advance timers by another 2 seconds and check again within act
+    act(() => {
+      jest.advanceTimersByTime(2000);
+    });
+
+    const nextMessage = loadingMessageElement.textContent;
+    expect(loadingMessages).toContain(nextMessage);
+    expect(nextMessage).not.toBe(newMessage);
+
+    // Cleanup fake timers
+    jest.useRealTimers();
   });
 
   test("clears interval on unmount", () => {

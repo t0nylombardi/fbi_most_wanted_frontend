@@ -5,6 +5,7 @@ const handleResponse = async (response: Response): Promise<unknown> => {
     const errorText = await response.text();
     throw new Error(errorText || "Network response was not ok");
   }
+  if (response.status === 204) return; // handles DELETE requests
   return response.json();
 };
 
