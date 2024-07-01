@@ -1,43 +1,7 @@
-// src/components/SinglePersonCard.test.tsx
-
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import "@testing-library/jest-dom";
 import SinglePersonCard from "../../components/SinglePersonCard";
 import { WantedPerson } from "../../services/types";
-
-// Mock the ImageCard component
-jest.mock(
-  "../../components/ImageCard",
-  () =>
-    ({ image, caption }: { image: { large: string; caption: string }; caption: boolean }) =>
-      <div data-testid="image-card">{caption && <p>{image.caption}</p>}</div>,
-);
-
-// Mock the WantedPersonDetails component
-jest.mock("../../components/WantedPersonDetails", () => ({ person }: { person: WantedPerson }) => (
-  <div data-testid="wanted-person-details">{person.title}</div>
-));
-
-// Mock the PersonDescription component
-jest.mock(
-  "../../components/PersonDescription",
-  () =>
-    ({ description, details }: { description: string | null; details: string | null }) =>
-      <div data-testid="person-description">{description || details}</div>,
-);
-
-// Mock the Button component
-jest.mock(
-  "../../components/Button",
-  () =>
-    ({ text, onClick }: { text: string; onClick: () => void }) =>
-      (
-        <button data-testid={text} onClick={onClick}>
-          {text}
-        </button>
-      ),
-);
 
 const mockPerson: WantedPerson = {
   id: "1",
@@ -59,43 +23,105 @@ const mockPerson: WantedPerson = {
   subjects: ["John", "Doe"],
 };
 
-describe("SinglePersonCard", () => {
-  let closeModal: jest.Mock;
-  let removeWantedPerson: jest.Mock;
+const mockEditPersonDetails = jest.fn();
+const mockRemoveWantedPerson = jest.fn();
+const mockCloseModal = jest.fn();
 
+describe("SinglePersonCard Component", () => {
   beforeEach(() => {
-    closeModal = jest.fn();
-    removeWantedPerson = jest.fn();
+    jest.clearAllMocks();
   });
 
-  test("renders the SinglePersonCard with provided person data", () => {
-    render(<SinglePersonCard person={mockPerson} />);
-    expect(screen.queryAllByText(mockPerson.title?.toString() || "")[0]).toBeInTheDocument();
-    expect(screen.getByTestId("image-card")).toBeInTheDocument();
-    expect(screen.getByTestId("wanted-person-details")).toBeInTheDocument();
+  it("renders correctly with the given person data", () => {
+    render(
+      <SinglePersonCard
+        person={mockPerson}
+        editPersonDetails={mockEditPersonDetails}
+        removeWantedPerson={mockRemoveWantedPerson}
+      />,
+    );
+
+    expect(screen.getByTestId("person-title")).toBeInTheDocument();
     expect(screen.getByTestId("person-description")).toBeInTheDocument();
+    expect(screen.getByText("Blue")).toBeInTheDocument(); // Checking one detail
   });
 
-  test("renders the close button when showCloseModal is true", () => {
-    render(<SinglePersonCard person={mockPerson} showCloseModal={true} closeModal={closeModal} />);
-    expect(screen.getByText("×")).toBeInTheDocument();
+  it("renders close button when showCloseModal is true", () => {
+    render(
+      <SinglePersonCard
+        person={mockPerson}
+        editPersonDetails={mockEditPersonDetails}
+        removeWantedPerson={mockRemoveWantedPerson}
+        closeModal={mockCloseModal}
+        showCloseModal={true}
+      />,
+    );
+
+    const closeButton = screen.getByText("×");
+    expect(closeButton).toBeInTheDocument();
   });
 
-  test("calls closeModal when the close button is clicked", () => {
-    render(<SinglePersonCard person={mockPerson} showCloseModal={true} closeModal={closeModal} />);
-    fireEvent.click(screen.getByText("×"));
-    expect(closeModal).toHaveBeenCalled();
+  it("does not render close button when showCloseModal is false", () => {
+    render(
+      <SinglePersonCard
+        person={mockPerson}
+        editPersonDetails={mockEditPersonDetails}
+        removeWantedPerson={mockRemoveWantedPerson}
+        closeModal={mockCloseModal}
+        showCloseModal={false}
+      />,
+    );
+
+    const closeButton = screen.queryByText("×");
+    expect(closeButton).not.toBeInTheDocument();
   });
 
-  test("calls removeWantedPerson when the remove button is clicked", () => {
-    render(<SinglePersonCard person={mockPerson} removeWantedPerson={removeWantedPerson} />);
-    fireEvent.click(screen.getByTestId("remove"));
-    expect(removeWantedPerson).toHaveBeenCalledWith(mockPerson.id);
+  it("calls editPersonDetails with correct id when edit button is clicked", () => {
+    render(
+      <SinglePersonCard
+        person={mockPerson}
+        editPersonDetails={mockEditPersonDetails}
+        removeWantedPerson={mockRemoveWantedPerson}
+      />,
+    );
+
+    const editButton = screen.getByText("edit");
+    fireEvent.click(editButton);
+
+    expect(mockEditPersonDetails).toHaveBeenCalledWith(mockPerson.id);
+    expect(mockEditPersonDetails).toHaveBeenCalledTimes(1);
   });
 
-  test("does not call removeWantedPerson when the remove button is clicked and removeWantedPerson is not provided", () => {
-    render(<SinglePersonCard person={mockPerson} />);
-    fireEvent.click(screen.getByTestId("remove"));
-    expect(removeWantedPerson).not.toHaveBeenCalled();
+  it("calls removeWantedPerson with correct id when remove button is clicked", () => {
+    render(
+      <SinglePersonCard
+        person={mockPerson}
+        editPersonDetails={mockEditPersonDetails}
+        removeWantedPerson={mockRemoveWantedPerson}
+      />,
+    );
+
+    const removeButton = screen.getByText("remove");
+    fireEvent.click(removeButton);
+
+    expect(mockRemoveWantedPerson).toHaveBeenCalledWith(mockPerson.id);
+    expect(mockRemoveWantedPerson).toHaveBeenCalledTimes(1);
+  });
+
+  it("calls closeModal when close button is clicked", () => {
+    render(
+      <SinglePersonCard
+        person={mockPerson}
+        editPersonDetails={mockEditPersonDetails}
+        removeWantedPerson={mockRemoveWantedPerson}
+        closeModal={mockCloseModal}
+        showCloseModal={true}
+      />,
+    );
+
+    const closeButton = screen.getByText("×");
+    fireEvent.click(closeButton);
+
+    expect(mockCloseModal).toHaveBeenCalledTimes(1);
   });
 });

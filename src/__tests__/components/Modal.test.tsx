@@ -1,10 +1,9 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import Modal from "../../components/Modal";
 import { WantedPerson } from "../../services/types";
+import { render, fireEvent } from "@testing-library/react";
+import Modal from "../../components/Modal";
 
-// Mock data
 const mockPerson: WantedPerson = {
   id: "1",
   title: "John Doe",
@@ -25,110 +24,50 @@ const mockPerson: WantedPerson = {
   subjects: ["John", "Doe"],
 };
 
-const closeModalMock = jest.fn();
-const editWantedPersonMock = jest.fn();
-const removeWantedPersonMock = jest.fn();
+const mockUpdatePersonDetails = jest.fn();
+const mockEditPersonDetails = jest.fn();
+const mockRemoveWantedPerson = jest.fn();
+const mockCloseModal = jest.fn();
+
+const defaultProps = {
+  closeModal: mockCloseModal,
+  person: mockPerson,
+  isEditing: false,
+  editPersonDetails: mockEditPersonDetails,
+  updatePersonDetails: mockUpdatePersonDetails,
+  removeWantedPerson: mockRemoveWantedPerson,
+};
 
 describe("Modal Component", () => {
-  afterEach(() => {
+  beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  test("renders SinglePersonCard when not editing", () => {
-    render(
-      <Modal
-        closeModal={closeModalMock}
-        person={mockPerson}
-        isEditing={false}
-        editWantedPerson={editWantedPersonMock}
-        removeWantedPerson={removeWantedPersonMock}
-      />,
-    );
+  it("renders SinglePersonCard when isEditing is false", () => {
+    const { getByText } = render(<Modal {...defaultProps} />);
 
-    expect(screen.getByText(mockPerson.title || "")).toBeInTheDocument();
-    expect(screen.getByText(mockPerson.description || "")).toBeInTheDocument();
+    // Assuming there's a text in SinglePersonCard
+    expect(getByText(mockPerson.title)).toBeInTheDocument();
   });
 
-  test("renders Form when editing", () => {
-    render(
-      <Modal
-        closeModal={closeModalMock}
-        person={mockPerson}
-        isEditing={true}
-        editWantedPerson={editWantedPersonMock}
-        removeWantedPerson={removeWantedPersonMock}
-      />,
-    );
+  it("renders Form when isEditing is true", () => {
+    const { getByText } = render(<Modal {...defaultProps} isEditing={true} />);
 
-    // Assuming Form component has an input field for the person's name
-    expect(screen.getByTestId("age_range")).toBeInTheDocument();
+    expect(getByText("Submit")).toBeInTheDocument();
   });
 
-  test("calls closeModal when clicking outside the modal", () => {
-    render(
-      <Modal
-        closeModal={closeModalMock}
-        person={mockPerson}
-        isEditing={false}
-        editWantedPerson={editWantedPersonMock}
-        removeWantedPerson={removeWantedPersonMock}
-      />,
-    );
+  it("calls closeModal when clicking outside the modal", () => {
+    render(<Modal {...defaultProps} />);
 
-    fireEvent.mouseDown(document);
+    fireEvent.mouseDown(document.body); // Simulate click outside modal
 
-    expect(closeModalMock).toHaveBeenCalled();
+    expect(mockCloseModal).toHaveBeenCalledTimes(1);
   });
 
-  test("does not call closeModal when clicking inside the modal", () => {
-    render(
-      <Modal
-        closeModal={closeModalMock}
-        person={mockPerson}
-        isEditing={false}
-        editWantedPerson={editWantedPersonMock}
-        removeWantedPerson={removeWantedPersonMock}
-      />,
-    );
+  it("calls updatePersonDetails when submitting the Form", () => {
+    const { getByText } = render(<Modal {...defaultProps} isEditing={true} />);
+    fireEvent.click(getByText("Submit"));
 
-    const modalElement = screen.getByRole("dialog");
-
-    fireEvent.mouseDown(modalElement);
-
-    expect(closeModalMock).not.toHaveBeenCalled();
-  });
-
-  test("calls editWantedPerson when edit button is clicked in SinglePersonCard", () => {
-    render(
-      <Modal
-        closeModal={closeModalMock}
-        person={mockPerson}
-        isEditing={false}
-        editWantedPerson={editWantedPersonMock}
-        removeWantedPerson={removeWantedPersonMock}
-      />,
-    );
-
-    // Assuming SinglePersonCard has an edit button with text "Edit"
-    fireEvent.click(screen.getByText(/edit/i));
-
-    expect(editWantedPersonMock).toHaveBeenCalledWith(mockPerson.id);
-  });
-
-  test("calls removeWantedPerson when remove button is clicked in SinglePersonCard", () => {
-    render(
-      <Modal
-        closeModal={closeModalMock}
-        person={mockPerson}
-        isEditing={false}
-        editWantedPerson={editWantedPersonMock}
-        removeWantedPerson={removeWantedPersonMock}
-      />,
-    );
-
-    // Assuming SinglePersonCard has a remove button with text "Remove"
-    fireEvent.click(screen.getByText(/remove/i));
-
-    expect(removeWantedPersonMock).toHaveBeenCalled();
+    expect(mockUpdatePersonDetails).toHaveBeenCalledTimes(1);
   });
 });

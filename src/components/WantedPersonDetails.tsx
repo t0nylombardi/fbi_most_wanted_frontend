@@ -11,8 +11,8 @@ type WantedPersonDetailsProps = {
  * @param {number} inches - The height in inches.
  * @returns {string} The height in feet and inches.
  */
-const convertHeightToFeet = (inches: number): string | null => {
-  if (inches === 0) return null;
+const convertHeightToFeet = (inches: number): string => {
+  if (inches === 0) return "";
   const feet = Math.floor(inches / 12);
   const remainingInches = inches % 12;
   return `${feet}ft ${remainingInches}in`;
@@ -23,8 +23,8 @@ const convertHeightToFeet = (inches: number): string | null => {
  * @param {number} weight - The weight in pounds.
  * @returns {string | null} The weight in pounds.
  */
-const convertWeight = (weight: number): string | null => {
-  if (weight === 0) return null;
+const convertWeight = (weight: number): string => {
+  if (weight === 0) return "";
   return `${weight} lbs`;
 };
 

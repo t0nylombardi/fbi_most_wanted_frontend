@@ -2,7 +2,8 @@ import React from "react";
 
 type ButtonProps = {
   text: string;
-  onClick: () => void;
+  onClick?: () => void;
+  type?: "button" | "submit" | "reset"; // Add the type prop
 };
 
 const Button = ({ text, onClick }: ButtonProps) => {

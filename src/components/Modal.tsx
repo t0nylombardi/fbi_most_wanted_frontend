@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { WantedPerson } from "../services/types";
+import { WantedPerson, PersonDetails } from "../services/types";
 import SinglePersonCard from "./SinglePersonCard";
 import Form from "./WantedEditForm/FormCard";
 
@@ -7,7 +7,8 @@ interface ModalProps {
   closeModal: () => void;
   person: WantedPerson;
   isEditing: boolean;
-  editWantedPerson: (id: string) => void;
+  editPersonDetails: (id: string) => void;
+  updatePersonDetails: (id: string, updatedDetails: Partial<PersonDetails>) => void;
   removeWantedPerson: () => void;
 }
 
@@ -15,7 +16,8 @@ const Modal = ({
   closeModal,
   person,
   isEditing,
-  editWantedPerson,
+  editPersonDetails,
+  updatePersonDetails,
   removeWantedPerson,
 }: ModalProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
@@ -28,7 +30,6 @@ const Modal = ({
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -39,14 +40,14 @@ const Modal = ({
       <div className="modal fixed inset-0 z-50 flex items-center justify-center outline-none focus:outline-none">
         <div role="dialog" ref={modalRef} className="p-4 rounded-lg">
           {isEditing ? (
-            <Form person={person} />
+            <Form person={person} updatePersonDetails={updatePersonDetails} />
           ) : (
             <SinglePersonCard
               person={person}
               closeModal={closeModal}
               showCloseModal={true}
               modal={true}
-              editWantedPerson={editWantedPerson}
+              editPersonDetails={editPersonDetails}
               removeWantedPerson={removeWantedPerson}
             />
           )}

@@ -11,7 +11,7 @@ type WantedPersonProps = {
   closeModal?: () => void;
   showCloseModal?: boolean;
   modal?: boolean;
-  editWantedPerson?: (id: string) => void;
+  editPersonDetails: (id: string) => void;
   removeWantedPerson?: (id: string) => void;
 };
 
@@ -20,7 +20,7 @@ const SinglePersonCard = ({
   closeModal,
   showCloseModal = false,
   modal = false,
-  editWantedPerson,
+  editPersonDetails,
   removeWantedPerson,
 }: WantedPersonProps) => {
   return (
@@ -43,7 +43,11 @@ const SinglePersonCard = ({
         )}
         <ImageCard image={person.images[0]} caption={true} />
         <div className="flex flex-col justify-around w-full sm:w-[70%] md:w-[60%] lg:w-[50%]">
-          <h1 className="text-white font-bold text-3xl mt-6 mb-8">
+          <h1
+            className="text-white font-bold text-3xl mt-6 mb-8"
+            data-testid="person-title"
+            role="title"
+          >
             {capitalize(removeSeparator(person.title || ""))}
           </h1>
           <div id="details" className="flex flex-wrap justify-start items-center gap-4">
@@ -53,7 +57,7 @@ const SinglePersonCard = ({
         </div>
       </div>
       <div className="flex flex-row justify-center pb-8">
-        <Button text="edit" onClick={() => editWantedPerson && editWantedPerson(person.id)} />
+        <Button text="edit" onClick={() => editPersonDetails && editPersonDetails(person.id)} />
         <Button text="remove" onClick={() => removeWantedPerson && removeWantedPerson(person.id)} />
       </div>
     </div>

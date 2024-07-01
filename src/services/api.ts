@@ -3,7 +3,7 @@ const BASE_URL = "http://localhost:3000/api/v1";
 const handleResponse = async (response: Response): Promise<unknown> => {
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(errorText || "Network response was not ok");
+    throw new Error(errorText);
   }
   if (response.status === 204) return; // handles DELETE requests
   return response.json();

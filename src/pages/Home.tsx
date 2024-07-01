@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { WantedPerson } from "../services/types";
+import { WantedPerson, PersonDetails } from "../services/types";
 import PageWrapper from "../components/PageWrapper";
 import { wanted } from "../services/endpoints";
 import ImageCardList from "../components/ImageCardList";
@@ -11,13 +11,17 @@ import PaginationControlls from "../components/PaginationControlls";
 const ITEMS_PER_PAGE = 20;
 
 const fetchWantedPersons = async () => {
-  const result = await wanted.read();
-  result.sort((a, b) => {
-    const dateA = new Date(String(a.modified)).getTime();
-    const dateB = new Date(String(b.modified)).getTime();
-    return dateA - dateB;
-  });
-  return result;
+  try {
+    const result = await wanted.read();
+    result.sort((a, b) => {
+      const dateA = new Date(String(a.modified)).getTime();
+      const dateB = new Date(String(b.modified)).getTime();
+      return dateA - dateB;
+    });
+    return result;
+  } catch (error) {
+    throw new Error("Failed to fetch wanted persons");
+  }
 };
 
 const Home: React.FC = () => {
@@ -32,6 +36,7 @@ const Home: React.FC = () => {
   } = useQuery<WantedPerson[], Error>({
     queryKey: ["wantedPersons"],
     queryFn: fetchWantedPersons,
+    retry: false,
   });
 
   const openModal = (person: WantedPerson) => {
@@ -43,9 +48,32 @@ const Home: React.FC = () => {
     setActivePerson(null);
   };
 
-  const editWantedPerson = (id: string) => {
-    console.log("Editing person with id: ", id);
+  const updatePersonDetails = async (id: string, updatedDetails: Partial<PersonDetails>) => {
+    console.log("Update person details...");
     setIsEditing(true);
+
+    if (activePerson) {
+      const convertedDetails: Partial<PersonDetails> = { ...updatedDetails };
+
+      // Handle the conversion if necessary
+      if (updatedDetails.height_max === "string") {
+        const heightMatch = updatedDetails.height_max.match(/(\d+)ft (\d+)in/);
+        if (heightMatch) {
+          const feet = parseInt(heightMatch[1], 10);
+          const inches = parseInt(heightMatch[2], 10);
+          convertedDetails.height_max = feet * 12 + inches;
+        } else {
+          convertedDetails.height_max = null; // Handle invalid input gracefully
+        }
+      }
+
+      const result = await wanted.update(id, convertedDetails);
+      // Update the cache manually
+      const updatedPersonIndex = persons.findIndex(person => person.id === activePerson.id);
+      persons[updatedPersonIndex] = result;
+      setActivePerson(result);
+      closeModal();
+    }
   };
 
   const removeWantedPerson = async (id: string) => {
@@ -70,7 +98,7 @@ const Home: React.FC = () => {
   const currentPersons = persons.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   if (isLoading) return <LoadingScreen />;
-  if (error) return <div>Error: {(error as Error).message}</div>;
+  if (error) return <div>{error.message}</div>;
 
   return (
     <PageWrapper>
@@ -89,8 +117,9 @@ const Home: React.FC = () => {
             person={activePerson}
             closeModal={closeModal}
             isEditing={isEditing}
-            editWantedPerson={() => editWantedPerson(activePerson.id)}
+            editPersonDetails={() => setIsEditing(true)}
             removeWantedPerson={() => removeWantedPerson(activePerson.id)}
+            updatePersonDetails={updatePersonDetails}
           />
         )}
       </>

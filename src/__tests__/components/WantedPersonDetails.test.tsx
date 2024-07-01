@@ -93,7 +93,7 @@ describe("WantedPersonDetail", () => {
       age_range: "25-30",
       eyes: "",
       hair: "Blonde",
-      height_max: null,
+      height_max: 0,
       place_of_birth: "New York",
       race: "Caucasian",
       sex: "Male",
