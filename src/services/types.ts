@@ -8,6 +8,7 @@ export interface WantedPerson {
   age_range: string;
   details: string;
   description: string;
+  caution: string;
   eyes: string;
   hair: string;
   height_max: number;

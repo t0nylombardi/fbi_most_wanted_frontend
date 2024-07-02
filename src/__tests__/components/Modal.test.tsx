@@ -3,26 +3,7 @@ import "@testing-library/jest-dom";
 import { WantedPerson } from "../../services/types";
 import { render, fireEvent } from "@testing-library/react";
 import Modal from "../../components/Modal";
-
-const mockPerson: WantedPerson = {
-  id: "1",
-  title: "John Doe",
-  details: "Details of Wanted Person",
-  height_min: 170,
-  weight_min: 70,
-  url: "url",
-  description: "Description of a Wanted Person",
-  images: [{ large: "image-url-1", caption: "This is a caption" }],
-  age_range: "25-30",
-  eyes: "Blue",
-  hair: "Blonde",
-  height_max: 180,
-  place_of_birth: "New York",
-  race: "Caucasian",
-  sex: "Male",
-  weight_max: 75,
-  subjects: ["John", "Doe"],
-};
+import mockPersons from "../../__mocks__/mockPersons";
 
 const mockUpdatePersonDetails = jest.fn();
 const mockEditPersonDetails = jest.fn();
@@ -31,7 +12,7 @@ const mockCloseModal = jest.fn();
 
 const defaultProps = {
   closeModal: mockCloseModal,
-  person: mockPerson,
+  person: mockPersons[0] as WantedPerson,
   isEditing: false,
   editPersonDetails: mockEditPersonDetails,
   updatePersonDetails: mockUpdatePersonDetails,
@@ -39,6 +20,7 @@ const defaultProps = {
 };
 
 describe("Modal Component", () => {
+  const mockPerson = mockPersons[0];
   beforeEach(() => {
     jest.clearAllMocks();
   });

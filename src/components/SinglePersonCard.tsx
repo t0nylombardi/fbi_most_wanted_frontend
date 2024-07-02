@@ -53,7 +53,11 @@ const SinglePersonCard = ({
           <div id="details" className="flex flex-wrap justify-start items-center gap-4">
             <WantedPersonDetails person={person} />
           </div>
-          <PersonDescription description={person.description} details={person.details} />
+          <PersonDescription
+            description={person.description}
+            details={person.details}
+            caution={person.caution}
+          />
         </div>
       </div>
       <div className="flex flex-row justify-center pb-8">

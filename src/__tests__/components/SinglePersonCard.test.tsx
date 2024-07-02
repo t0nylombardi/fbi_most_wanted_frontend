@@ -2,26 +2,9 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import SinglePersonCard from "../../components/SinglePersonCard";
 import { WantedPerson } from "../../services/types";
+import mockPersons from "../../__mocks__/mockPersons";
 
-const mockPerson: WantedPerson = {
-  id: "1",
-  title: "John Doe",
-  details: "Details of Wanted Person",
-  height_min: 170,
-  weight_min: 70,
-  url: "url",
-  description: "Description of a Wanted Person",
-  images: [{ large: "image-url-1", caption: "This is a caption" }],
-  age_range: "25-30",
-  eyes: "Blue",
-  hair: "Blonde",
-  height_max: 180,
-  place_of_birth: "New York",
-  race: "Caucasian",
-  sex: "Male",
-  weight_max: 75,
-  subjects: ["John", "Doe"],
-};
+const mockPerson = mockPersons[0] as WantedPerson;
 
 const mockEditPersonDetails = jest.fn();
 const mockRemoveWantedPerson = jest.fn();

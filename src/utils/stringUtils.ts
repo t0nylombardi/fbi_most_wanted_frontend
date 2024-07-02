@@ -47,3 +47,31 @@ export const convertWeight = (weight: number): string | null => {
   if (weight === 0) return null;
   return `${weight} lbs`;
 };
+
+/**
+ * Finds the longest string from a list of strings.
+ * @param str1 The first string.
+ * @param str2 The second string.
+ * @param str3 The third string.
+ * @returns The longest string.
+ */
+export const findLonestDetail = (
+  str1: string | null,
+  str2: string | null,
+  str3: string | null,
+): string => {
+  // Handle null values (if needed)
+  str1 = str1 || "";
+  str2 = str2 || "";
+  str3 = str3 || "";
+
+  // Compare lengths
+  const length1: number = str1.length;
+  const length2: number = str2.length;
+  const length3: number = str3.length;
+
+  if (length1 >= length2 && length1 >= length3) return str1;
+  if (length2 >= length1 && length2 >= length3) return str2;
+
+  return str3;
+};
