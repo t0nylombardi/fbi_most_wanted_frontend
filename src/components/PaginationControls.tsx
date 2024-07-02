@@ -9,7 +9,7 @@ type PaginationControllsProps = {
   personsLength: number;
 };
 
-const PaginationControlls = ({
+const PaginationControls = ({
   handlePrevPage,
   currentPage,
   handleNextPage,
@@ -40,4 +40,4 @@ const PaginationControlls = ({
   );
 };
 
-export default PaginationControlls;
+export default PaginationControls;

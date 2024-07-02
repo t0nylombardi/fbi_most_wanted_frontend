@@ -12,7 +12,6 @@ const SubjectsList = () => {
     const getData = async () => {
       try {
         const result: WantedPerson[] = await wanted.read();
-        console.log(result); // Log the result to check its structure
         const uniqueSubjects = Array.from(
           new Set(result.flatMap(person => person.subjects)),
         ).sort();

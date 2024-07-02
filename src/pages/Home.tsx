@@ -1,12 +1,11 @@
-import React, { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { WantedPerson, PersonDetails } from "../services/types";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import PageWrapper from "../components/PageWrapper";
 import { wanted } from "../services/endpoints";
 import ImageCardList from "../components/ImageCardList";
 import Modal from "../components/Modal";
 import LoadingScreen from "../components/LoadingScreen";
-import PaginationControlls from "../components/PaginationControlls";
+import PaginationControls from "../components/PaginationControls";
+import { WantedPerson, PersonDetails } from "../services/types";
 
 const ITEMS_PER_PAGE = 20;
 
@@ -28,81 +27,101 @@ const Home: React.FC = () => {
   const [activePerson, setActivePerson] = useState<WantedPerson | null>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [persons, setPersons] = useState<WantedPerson[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<Error | null>(null);
 
-  const {
-    data: persons = [],
-    isLoading = true,
-    error,
-  } = useQuery<WantedPerson[], Error>({
-    queryKey: ["wantedPersons"],
-    queryFn: fetchWantedPersons,
-    retry: false,
-  });
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        // sleep for 2 seconds to simulate loading
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        const result = await fetchWantedPersons();
+        setPersons(result);
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error);
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const openModal = (person: WantedPerson) => {
+    fetchData();
+  }, []);
+
+  const openModal = useCallback((person: WantedPerson) => {
     setActivePerson(person);
     setIsEditing(false);
-  };
+  }, []);
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setActivePerson(null);
-  };
+  }, []);
 
-  const updatePersonDetails = async (id: string, updatedDetails: Partial<PersonDetails>) => {
-    console.log("Update person details...");
-    setIsEditing(true);
+  const updatePersonDetails = useCallback(
+    async (id: string, updatedDetails: Partial<PersonDetails>) => {
+      setIsEditing(true);
 
-    if (activePerson) {
-      const convertedDetails: Partial<PersonDetails> = { ...updatedDetails };
+      if (activePerson) {
+        const convertedDetails: Partial<PersonDetails> = { ...updatedDetails };
 
-      // Handle the conversion if necessary
-      if (updatedDetails.height_max === "string") {
-        const heightMatch = updatedDetails.height_max.match(/(\d+)ft (\d+)in/);
-        if (heightMatch) {
-          const feet = parseInt(heightMatch[1], 10);
-          const inches = parseInt(heightMatch[2], 10);
-          convertedDetails.height_max = feet * 12 + inches;
-        } else {
-          convertedDetails.height_max = null; // Handle invalid input gracefully
+        // Handle the conversion if necessary
+        if (typeof updatedDetails.height_max === "string") {
+          const heightMatch = updatedDetails.height_max.match(/(\d+)ft (\d+)in/);
+          if (heightMatch) {
+            const feet = parseInt(heightMatch[1], 10);
+            const inches = parseInt(heightMatch[2], 10);
+            convertedDetails.height_max = feet * 12 + inches;
+          } else {
+            convertedDetails.height_max = null; // Handle invalid input gracefully
+          }
         }
+
+        const result = await wanted.update(id, convertedDetails);
+        // Update the cache manually
+        const updatedPersonIndex = persons.findIndex(person => person.id === activePerson.id);
+        persons[updatedPersonIndex] = result;
+        setActivePerson(result);
+        closeModal();
       }
+    },
+    [activePerson, persons, closeModal],
+  );
 
-      const result = await wanted.update(id, convertedDetails);
-      // Update the cache manually
-      const updatedPersonIndex = persons.findIndex(person => person.id === activePerson.id);
-      persons[updatedPersonIndex] = result;
-      setActivePerson(result);
+  const removeWantedPerson = useCallback(
+    async (id: string) => {
+      await wanted.delete(id);
+      // Refetch data or update cache manually
+      const updatedPersons = persons.filter(person => person.id !== id);
+      setPersons(updatedPersons);
       closeModal();
-    }
-  };
+    },
+    [persons, closeModal],
+  );
 
-  const removeWantedPerson = async (id: string) => {
-    await wanted.delete(id);
-    // Refetch data or update cache manually
-    persons.splice(
-      persons.findIndex(person => person.id === id),
-      1,
-    );
-    closeModal();
-  };
-
-  const handleNextPage = () => {
+  const handleNextPage = useCallback(() => {
     setCurrentPage(prevPage => prevPage + 1);
-  };
+  }, []);
 
-  const handlePrevPage = () => {
+  const handlePrevPage = useCallback(() => {
     setCurrentPage(prevPage => Math.max(prevPage - 1, 1));
-  };
+  }, []);
 
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentPersons = persons.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const startIndex = useMemo(() => (currentPage - 1) * ITEMS_PER_PAGE, [currentPage]);
+  const currentPersons = useMemo(
+    () => (Array.isArray(persons) ? persons.slice(startIndex, startIndex + ITEMS_PER_PAGE) : []),
+    [persons, startIndex],
+  );
 
   if (isLoading) return <LoadingScreen />;
-  if (error) return <div>{error.message}</div>;
+  if (error) return <div>{`Error: ${error.message}`}</div>;
 
   return (
     <PageWrapper>
-      <PaginationControlls
+      <PaginationControls
         handlePrevPage={handlePrevPage}
         currentPage={currentPage}
         handleNextPage={handleNextPage}
