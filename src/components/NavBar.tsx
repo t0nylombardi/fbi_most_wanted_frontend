@@ -2,12 +2,9 @@ import React from "react";
 
 const NavBar = () => {
   const links = [
-    { title: "Ten Most Wanted", url: "/top-ten" },
-    { title: "Wanted", url: "/wanted" },
-    { title: "Terrorism", url: "/terrorism" },
-    { title: "Seeking Information", url: "/seeking-info" },
-    { title: "Kidnappings", url: "/kifnappings" },
+    { title: "Cyber Crimes", url: "/cyber" },
     { title: "Missing Persons", url: "/missing-persons" },
+    { title: "Violent Crims", url: "/violent-crimes" },
   ];
 
   return (
@@ -16,7 +13,7 @@ const NavBar = () => {
         <div className="flex items-center justify-between py-4 px-2">
           <div className="">
             <h1 className="text-3xl">
-              <a role="link" href="/" className="hover:text-cedar-wood-finish-400">
+              <a role="home" href="/" className="hover:text-cedar-wood-finish-400">
                 FBI WANTED
               </a>
             </h1>

@@ -3,8 +3,13 @@ import { WantedPerson } from "../services/types";
 import PageWrapper from "../components/PageWrapper";
 import { wanted } from "../services/endpoints";
 
+interface SubjectCount {
+  subject: string;
+  count: number;
+}
+
 const SubjectsList = () => {
-  const [subjects, setSubjects] = useState<string[]>([]);
+  const [subjects, setSubjects] = useState<SubjectCount[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -12,11 +17,19 @@ const SubjectsList = () => {
     const getData = async () => {
       try {
         const result: WantedPerson[] = await wanted.read();
-        console.log(result); // Log the result to check its structure
-        const uniqueSubjects = Array.from(
-          new Set(result.flatMap(person => person.subjects)),
-        ).sort();
-        setSubjects(uniqueSubjects as string[]);
+        const subjectCounts: { [key: string]: number } = {};
+
+        result.forEach(person => {
+          person.subjects.forEach(subject => {
+            subjectCounts[subject] = (subjectCounts[subject] || 0) + 1;
+          });
+        });
+
+        const uniqueSubjects = Object.entries(subjectCounts)
+          .map(([subject, count]) => ({ subject, count }))
+          .sort((a, b) => b.count - a.count); // Sort by count in descending order
+
+        setSubjects(uniqueSubjects);
         setLoading(false);
       } catch (err) {
         setError((err as Error).message);
@@ -43,8 +56,10 @@ const SubjectsList = () => {
         Unique Subjects
       </h1>
       <ul className="list-disc ml-[2rem] text-white">
-        {subjects.map(subject => (
-          <li key={uuid()}>{subject}</li>
+        {subjects.map(({ subject, count }) => (
+          <li key={uuid()}>
+            {subject} - {count}
+          </li>
         ))}
       </ul>
     </PageWrapper>

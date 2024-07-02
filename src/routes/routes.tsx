@@ -4,6 +4,7 @@ import App from "../App";
 import Home from "../pages/Home";
 import ErrorPage from "../pages/ErrorPage";
 import SubjectsList from "../pages/SubjectsList";
+import CyberCrimes from "../pages/CyberCrimes";
 
 const routes: RouteObject[] = [
   {
@@ -11,6 +12,14 @@ const routes: RouteObject[] = [
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/cyber",
+        element: <CyberCrimes />,
+      },
       {
         path: "/",
         element: <Home />,
