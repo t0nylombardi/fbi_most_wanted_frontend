@@ -16,4 +16,9 @@ body {
 
 .btn {
   @apply text-jungle-green-500 hover:text-cedar-wood-finish-400 text-xl py-2 px-2 w-full;
+  @apply active:text-cedar-wood-finish-400;
+}
+
+.btn-active {
+  @apply text-cedar-wood-finish-400 hover:text-jungle-green-500 text-xl py-2 px-2 w-full;
 }

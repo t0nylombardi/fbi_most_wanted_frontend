@@ -1,7 +1,9 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 const NavBar = () => {
   const links = [
+    { title: "All Wanted", url: "/" },
     { title: "Cyber Crimes", url: "/cyber" },
     { title: "Missing Persons", url: "/missing-persons" },
     { title: "Violent Crims", url: "/violent-crimes" },
@@ -46,9 +48,14 @@ const NavBar = () => {
             <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:space-x-2 rtl:space-x-reverse md:mt-0 md:border-0">
               {links.map((link, index) => (
                 <li key={index} className="p-0 m-0">
-                  <a role="link" href={link.url} className="btn">
+                  <NavLink
+                    to={link.url}
+                    className={({ isActive, isPending }) =>
+                      [isPending ? "btn-pending" : "", isActive ? "btn-active" : "btn"].join(" ")
+                    }
+                  >
                     {link.title}
-                  </a>
+                  </NavLink>
                 </li>
               ))}
             </ul>
