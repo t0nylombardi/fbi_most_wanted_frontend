@@ -2,10 +2,11 @@ import { wanted } from "./endpoints";
 import { WantedPerson } from "./types";
 
 export const fetchWantedPersons = async (subject: string = ""): Promise<WantedPerson[]> => {
+  console.log("subject", subject);
   const filterObj: { [key: string]: string } = {
     cyber: "Cyber's Most Wanted",
     "missing-persons": "ViCAP Missing Persons",
-    "violent-crime": "Violent Crimes - Murders",
+    "violent-crimes": "Violent Crime - Murders",
   };
 
   try {

@@ -1,10 +1,14 @@
 import React from "react";
 import type { RouteObject } from "react-router";
 import App from "../App";
-import Home from "../pages/Home";
-import ErrorPage from "../pages/ErrorPage";
-import SubjectsList from "../pages/SubjectsList";
-import CyberCrimes from "../pages/CyberCrimes";
+import {
+  Home,
+  CyberCrimes,
+  MissingPersons,
+  ViolentCrimes,
+  ErrorPage,
+  SubjectsList,
+} from "../pages";
 
 const routes: RouteObject[] = [
   {
@@ -21,8 +25,12 @@ const routes: RouteObject[] = [
         element: <CyberCrimes />,
       },
       {
-        path: "/",
-        element: <Home />,
+        path: "/missing-persons",
+        element: <MissingPersons />,
+      },
+      {
+        path: "/violent-crimes",
+        element: <ViolentCrimes />,
       },
       {
         path: "/subjects",

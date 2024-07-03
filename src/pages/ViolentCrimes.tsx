@@ -12,8 +12,8 @@ import usePagination from "../hooks/usePagination";
 import { WantedPerson } from "../services/types";
 import { ITEMS_PER_PAGE } from "../services/constants";
 
-const CyberCrimes = () => {
-  const category = "missing-persons";
+const ViolentCrimes = () => {
+  const category = "violent-crimes";
   const { persons, isLoading, error, setPersons } = useFetchPersons(category);
   const { currentPage, handleNextPage, handlePrevPage, startIndex, currentPersons } =
     usePagination(persons);
@@ -51,4 +51,4 @@ const CyberCrimes = () => {
   );
 };
 
-export default CyberCrimes;
+export default ViolentCrimes;

@@ -1,6 +1,13 @@
+// Import necessary functions and types
 import { fetchData } from "./api";
 import { PersonDetails, WantedPerson } from "./types";
 
+/**
+ * Processes an array of WantedPerson data.
+ *
+ * @param {WantedPerson[]} data - Array of WantedPerson objects.
+ * @returns {WantedPerson[]} Processed array of WantedPerson objects.
+ */
 const processWantedPersons = (data: WantedPerson[]): WantedPerson[] => {
   // if data is not an array, return it as an array
   if (!data) return [];
@@ -11,6 +18,7 @@ const processWantedPersons = (data: WantedPerson[]): WantedPerson[] => {
     age_range: item.age_range,
     details: item.details,
     description: item.description,
+    caution: item.caution,
     eyes: item.eyes,
     hair: item.hair,
     height_max: item.height_max,
@@ -28,39 +36,81 @@ const processWantedPersons = (data: WantedPerson[]): WantedPerson[] => {
   }));
 };
 
+/**
+ * Creates a new WantedPerson entry.
+ *
+ * @param {string} endpoint - The API endpoint.
+ * @param {WantedPerson} data - The WantedPerson object to create.
+ * @returns {Promise<WantedPerson>} A promise that resolves to the created WantedPerson object.
+ */
 const createData = (endpoint: string, data: WantedPerson): Promise<WantedPerson> =>
   fetchData<WantedPerson>(endpoint, "POST", data);
 
+/**
+ * Reads WantedPerson data from an endpoint.
+ *
+ * @param {string} endpoint - The API endpoint.
+ * @returns {Promise<WantedPerson[]>} A promise that resolves to an array of WantedPerson objects.
+ */
 const readData = async (endpoint: string): Promise<WantedPerson[]> => {
   return await fetchData<WantedPerson[]>(endpoint);
 };
 
+/**
+ * Updates an existing WantedPerson entry.
+ *
+ * @param {string} endpoint - The API endpoint.
+ * @param {string} id - The ID of the WantedPerson to update.
+ * @param {PersonDetails} data - The details to update.
+ * @returns {Promise<WantedPerson>} A promise that resolves to the updated WantedPerson object.
+ */
 const updateData = (endpoint: string, id: string, data: PersonDetails): Promise<WantedPerson> =>
   fetchData<WantedPerson>(`${endpoint}/${id}`, "PUT", data);
 
+/**
+ * Deletes a WantedPerson entry.
+ *
+ * @param {string} endpoint - The API endpoint.
+ * @param {string} id - The ID of the WantedPerson to delete.
+ * @returns {Promise<void>} A promise that resolves when the deletion is complete.
+ */
 const deleteData = (endpoint: string, id: string): Promise<void> =>
   fetchData<void>(`${endpoint}/${id}`, "DELETE");
 
-export const tenMostWanted = {
-  create: (data: WantedPerson) => createData("/ten_most_wanted", data),
-  read: async (): Promise<WantedPerson[]> =>
-    processWantedPersons(await readData("/ten_most_wanted")),
-  update: (id: string, convertedDetails: Partial<PersonDetails>, data: WantedPerson) =>
-    updateData("/ten_most_wanted", id, data),
-  delete: (id: string) => deleteData("/ten_most_wanted", id),
-};
-
+/**
+ * Wanted person service for creating, reading, updating, and deleting wanted persons.
+ */
 export const wanted = {
+  /**
+   * Creates a new WantedPerson.
+   *
+   * @param {WantedPerson} data - The WantedPerson object to create.
+   * @returns {Promise<WantedPerson>} A promise that resolves to the created WantedPerson object.
+   */
   create: (data: WantedPerson) => createData("/default_all_pages", data),
+
+  /**
+   * Reads all WantedPerson data.
+   *
+   * @returns {Promise<WantedPerson[]>} A promise that resolves to an array of WantedPerson objects.
+   */
   read: async (): Promise<WantedPerson[]> =>
     processWantedPersons(await readData("/default_all_pages")),
-  update: (id: string, data: PersonDetails) => updateData("/default_all_pages", id, data),
-  delete: (id: string) => deleteData("/default_all_pages", id),
-};
 
-export const terrorist = {
-  create: (data: WantedPerson) => createData("/terrorist", data),
-  read: async (): Promise<WantedPerson[]> => processWantedPersons(await readData("/terrorist")),
-  update: (id: string, data: WantedPerson) => updateData("/terrorist", id, data),
-  delete: (id: string) => deleteData("/terrorist", id),
+  /**
+   * Updates an existing WantedPerson.
+   *
+   * @param {string} id - The ID of the WantedPerson to update.
+   * @param {PersonDetails} data - The details to update.
+   * @returns {Promise<WantedPerson>} A promise that resolves to the updated WantedPerson object.
+   */
+  update: (id: string, data: PersonDetails) => updateData("/default_all_pages", id, data),
+
+  /**
+   * Deletes a WantedPerson.
+   *
+   * @param {string} id - The ID of the WantedPerson to delete.
+   * @returns {Promise<void>} A promise that resolves when the deletion is complete.
+   */
+  delete: (id: string) => deleteData("/default_all_pages", id),
 };
