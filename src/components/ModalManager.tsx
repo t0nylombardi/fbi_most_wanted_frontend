@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import Modal from "./Modal";
 import { WantedPerson, PersonDetails } from "../services/types";
-import { wanted } from "../services/endpoints";
+import { wanted } from "../services/wantedPerson";
 
 interface ModalManagerProps {
   persons: WantedPerson[];

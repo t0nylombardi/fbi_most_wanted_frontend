@@ -1,4 +1,4 @@
-import { wanted } from "./endpoints";
+import { wanted } from "./wantedPerson";
 import { WantedPerson } from "./types";
 
 export const fetchWantedPersons = async (subject: string = ""): Promise<WantedPerson[]> => {

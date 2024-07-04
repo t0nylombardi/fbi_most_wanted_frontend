@@ -3,6 +3,11 @@ export interface Image {
   large: string | null | undefined;
 }
 
+export interface ProfileImage {
+  thumb: string | null | undefined;
+  default: string | null | undefined;
+}
+
 export interface WantedPerson {
   id: string;
   age_range: string;
@@ -40,4 +45,13 @@ export interface PersonDetails {
 export interface ApiResponse {
   total: number;
   items: WantedPerson[];
+}
+
+export interface User {
+  username: string;
+  password: string;
+  description: string;
+  token: string;
+  image: ProfileImage[];
+  wbsite: string;
 }

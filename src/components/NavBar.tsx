@@ -1,7 +1,12 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-const NavBar = () => {
+type NavBarProps = {
+  logout: () => void;
+  isLoggedIn: boolean;
+};
+
+const NavBar = ({ logout, isLoggedIn }: NavBarProps) => {
   const links = [
     { title: "All Wanted", url: "/" },
     { title: "Cyber Crimes", url: "/cyber" },
@@ -12,8 +17,8 @@ const NavBar = () => {
   return (
     <header>
       <nav role="navbar" className="px-[4rem]">
-        <div className="flex items-center justify-between py-4 px-2">
-          <div className="">
+        <div className="flex flex-row items-center justify-around py-4 px-2">
+          <div className="w-1/2">
             <h1 className="text-3xl">
               <a role="home" href="/" className="hover:text-cedar-wood-finish-400">
                 FBI WANTED
@@ -45,7 +50,7 @@ const NavBar = () => {
             </svg>
           </button>
           <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-            <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:space-x-2 rtl:space-x-reverse md:mt-0 md:border-0">
+            <ul className="font-medium flex flex-col justify-center p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:space-x-2 rtl:space-x-reverse md:mt-0 md:border-0">
               {links.map((link, index) => (
                 <li key={index} className="p-0 m-0">
                   <NavLink
@@ -59,6 +64,20 @@ const NavBar = () => {
                 </li>
               ))}
             </ul>
+          </div>
+          <div className="flex justify-end">
+            {isLoggedIn ? (
+              <>
+                <NavLink to="/profile" className="btn">
+                  Profile
+                </NavLink>
+                <button className="btn" onClick={logout}>
+                  Logout
+                </button>
+              </>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </nav>
