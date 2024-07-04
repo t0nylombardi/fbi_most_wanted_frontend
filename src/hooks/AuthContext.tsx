@@ -1,5 +1,4 @@
-// src/hooks/AuthContext.tsx
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { userAuth } from "../services/endpoints";
 import { User } from "../services/types";
 
@@ -18,31 +17,37 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return savedState ? JSON.parse(savedState) : false;
   });
 
+  const [user, setUser] = useState<User | null>(() => {
+    const savedUser = localStorage.getItem("user");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+
   const login = async (username: string, password: string): Promise<void> => {
     console.log("login");
     const response = await userAuth.login(username, password);
-    if (response.success) {
-      // assuming response has a success property
+    if (response.success && response.user) {
       setIsLoggedIn(true);
+      setUser(response.user);
       localStorage.setItem("isLoggedIn", JSON.stringify(true));
+      localStorage.setItem("user", JSON.stringify(response.user));
     }
   };
 
   const logout = () => {
     setIsLoggedIn(false);
+    setUser(null);
     localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("user");
   };
 
-  useEffect(() => {
-    // Any additional setup can go here
-  }, []);
-
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout, user: null }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout, user }}>
       {children}
     </AuthContext.Provider>
   );
 };
+
+export { AuthContext };
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = (): AuthContextType => {

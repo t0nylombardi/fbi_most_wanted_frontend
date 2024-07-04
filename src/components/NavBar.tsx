@@ -1,12 +1,15 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { User } from "../services/types";
 
 type NavBarProps = {
   logout: () => void;
   isLoggedIn: boolean;
+  user: User | null;
 };
 
-const NavBar = ({ logout, isLoggedIn }: NavBarProps) => {
+const NavBar = ({ logout, isLoggedIn, user }: NavBarProps) => {
+  console.log("NavBar");
   const links = [
     { title: "All Wanted", url: "/" },
     { title: "Cyber Crimes", url: "/cyber" },
@@ -49,7 +52,7 @@ const NavBar = ({ logout, isLoggedIn }: NavBarProps) => {
               />
             </svg>
           </button>
-          <div className="hidden w-full md:block md:w-auto" id="navbar-default">
+          <div className="w-full md:block md:w-auto" id="navbar-default">
             <ul className="font-medium flex flex-col justify-center p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:space-x-2 rtl:space-x-reverse md:mt-0 md:border-0">
               {links.map((link, index) => (
                 <li key={index} className="p-0 m-0">
@@ -65,12 +68,22 @@ const NavBar = ({ logout, isLoggedIn }: NavBarProps) => {
               ))}
             </ul>
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end items-center">
             {isLoggedIn ? (
               <>
-                <NavLink to="/profile" className="btn">
-                  Profile
-                </NavLink>
+                <div>
+                  <NavLink
+                    to="/profile"
+                    className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                    id="user-profile-button"
+                  >
+                    <img
+                      className="h-[3rem] w-[4rem] rounded-full"
+                      src={user?.image.default}
+                      alt=""
+                    />
+                  </NavLink>
+                </div>
                 <button className="btn" onClick={logout}>
                   Logout
                 </button>

@@ -46,6 +46,7 @@ const Login = () => {
                 onChange={handleChange}
                 value={formData.username}
                 autoComplete="username"
+                placeholder="rickastley"
               />
             </div>
           </div>
@@ -68,6 +69,7 @@ const Login = () => {
                 onChange={handleChange}
                 value={formData.password}
                 autoComplete="current-password"
+                placeholder="nevergonnagiveyouup"
               />
             </div>
           </div>
@@ -81,6 +83,12 @@ const Login = () => {
             </button>
           </div>
         </form>
+
+        <div className="mt-6 text-lg font-medium leading-6 text-gray-500">
+          Username & Password
+          <p className="pt-4">rickastley</p>
+          <p className="p-2">nevergonnagiveyouup</p>
+        </div>
       </div>
     </div>
   );

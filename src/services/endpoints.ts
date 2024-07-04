@@ -2,10 +2,7 @@ import { fetchData } from "./api";
 import { User } from "./types";
 
 export const userAuth = {
-  login: async (
-    username: string,
-    password: string,
-  ): Promise<{ success: boolean; token?: string }> => {
+  login: async (username: string, password: string): Promise<{ success: boolean; user?: User }> => {
     try {
       const response = await fetchData<User>("/user/auth", "POST", {
         username,
@@ -13,7 +10,7 @@ export const userAuth = {
       });
 
       if (response.ok) {
-        return { success: true, token: response.data.token }; // Assuming the API returns a token
+        return { success: true, user: response.data }; // Assuming the API returns the user data
       } else {
         return { success: false };
       }

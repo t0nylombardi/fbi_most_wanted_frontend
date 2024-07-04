@@ -5,7 +5,7 @@ import "./App.css";
 import { AuthProvider, useAuth } from "./hooks/AuthContext";
 
 function AppContent() {
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, logout, user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,7 +19,11 @@ function AppContent() {
 
   return (
     <>
-      {isLoggedIn ? <NavBar logout={logout} isLoggedIn={isLoggedIn} /> : <Navigate to="/login" />}
+      {isLoggedIn ? (
+        <NavBar logout={logout} isLoggedIn={isLoggedIn} user={user} />
+      ) : (
+        <Navigate to="/login" />
+      )}
       <Outlet />
     </>
   );

@@ -1,35 +1,64 @@
-import React from "react";
-import { useAuth } from "../hooks/AuthContext";
-import { PageWrapper } from "../components";
+import React, { useContext } from "react";
+import { AuthContext } from "../hooks/AuthContext";
+import { splitArrayInHalf } from "../utils/arrayUtils";
+import CheckBox from "../components/CheckBox";
 
 const Profile = () => {
-  console.log("Profile");
-  const { isLoggedIn, user } = useAuth();
+  const authContext = useContext(AuthContext);
+  if (!authContext) return <div>Error: AuthContext not available</div>;
+
+  const { user } = authContext;
+  if (!user) return <div>Loading...</div>;
+
+  const [firstHalf, secondHalf] = splitArrayInHalf(user.promises);
 
   return (
-    <PageWrapper>
-      <div className="flex flex-col items-center justify-center h-full">
-        <h1 className="text-4xl font-bold text-jungle-green-500">Profile</h1>
-        <div className="mt-4">
-          {isLoggedIn ? (
-            <div>
-              <p className="text-lg font-semibold text-jungle-green-500">
-                Welcome {user?.username}
-              </p>
-              <div
-                // Normally you shouldn't usedangerouslySetInnerHTML but, this html is comming from a safe api source
-                dangerouslySetInnerHTML={{ __html: user?.description || "" }}
-                className="text-white w-full mb-10"
-                data-testid="person-description"
-                role="description"
-              />
+    <section className="flex items-center justify-center my-12">
+      <header className="text-white mx-[28rem]">
+        <h1 className="text-[3rem] py-12 text-chilean-fire-500">Hi, I'm agent Rick Astley</h1>
+        <div className="flex flex-row align-center">
+          <img
+            className="rounded-full h-64 w-64 object-cover"
+            src={user.image.default.toString()}
+            alt="My profile pic"
+          />
+          <div className="flex flex-col px-12 justify-center align-middle">
+            <h2 className="text-[3rem] py-2">_Things about me</h2>
+            <p className="py-2 text-3xl text-chilean-fire-500">I will never:</p>
+            <div className="flex flex-row">
+              <div className="flex flex-col mx-8">
+                <ul className="m-0 p-0 inline">
+                  {firstHalf.map((promise, index) => (
+                    <li key={index} className="text-2xl">
+                      <CheckBox text={promise} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="flex flex-col mx-8">
+                <ul className="m-0 p-0 inline">
+                  {secondHalf.map((promise, index) => (
+                    <li key={index} className="text-2xl">
+                      <CheckBox text={promise} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
-          ) : (
-            <p className="text-lg font-semibold text-jungle-green-500">You are not logged in</p>
-          )}
+
+            <div className="flex flex-row justify-between py-12">
+              <a
+                href={user.website}
+                className="w-full bg-gradient-to-tr from-chilean-fire-500 to-cedar-wood-finish-600 hover:bg-gradient-to-bl  text-white font-bold py-2 px-4 mt-4 mx-8"
+                target="_blank"
+              >
+                Website
+              </a>
+            </div>
+          </div>
         </div>
-      </div>
-    </PageWrapper>
+      </header>
+    </section>
   );
 };
 
