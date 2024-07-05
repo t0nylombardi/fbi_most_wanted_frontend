@@ -9,7 +9,6 @@ type NavBarProps = {
 };
 
 const NavBar = ({ logout, isLoggedIn, user }: NavBarProps) => {
-  console.log("NavBar");
   const links = [
     { title: "All Wanted", url: "/" },
     { title: "Cyber Crimes", url: "/cyber" },

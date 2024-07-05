@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import Modal from "./Modal";
 import { WantedPerson, PersonDetails } from "../services/types";
-import { wanted } from "../services/wantedPerson";
+import { wanted } from "../services/fetchWantedPersonsService";
 
 interface ModalManagerProps {
   persons: WantedPerson[];
@@ -26,7 +26,6 @@ const ModalManager: React.FC<ModalManagerProps> = ({
     async (id: string, updatedDetails: Partial<PersonDetails>) => {
       setIsEditing(true);
       const result = await wanted.update(id, updatedDetails);
-      console.log("Updated person details: ", result);
       const updatedPersonIndex = activePerson
         ? persons.findIndex(person => person.id === activePerson.id)
         : -1;

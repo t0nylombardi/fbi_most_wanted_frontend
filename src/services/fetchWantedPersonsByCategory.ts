@@ -1,8 +1,15 @@
-import { wanted } from "./wantedPerson";
+import { wanted } from "./fetchWantedPersonsService";
 import { WantedPerson } from "./types";
 
-export const fetchWantedPersons = async (category: string = ""): Promise<WantedPerson[]> => {
-  console.log("category", category);
+/**
+ * Fetch wanted persons based on category
+ *
+ * @param {string} category - The category to filter by
+ * @returns {Promise<WantedPerson[]>} A promise that resolves to an array of wanted persons
+ */
+export const fetchWantedPersonsByCategory = async (
+  category: string = "",
+): Promise<WantedPerson[]> => {
   const filterObj: { [key: string]: string } = {
     cyber: "Cyber's Most Wanted",
     "missing-persons": "ViCAP Missing Persons",

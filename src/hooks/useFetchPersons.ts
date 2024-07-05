@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { WantedPerson } from "../services/types";
-import { fetchWantedPersons } from "../services/fetchWantedPersons";
+import { fetchWantedPersonsByCategory } from "../services/fetchWantedPersonsByCategory";
 
 const useFetchPersons = (subject: string) => {
   const [persons, setPersons] = useState<WantedPerson[]>([]);
@@ -10,7 +10,7 @@ const useFetchPersons = (subject: string) => {
   useEffect(() => {
     setIsLoading(true);
     setError(null);
-    fetchWantedPersons(subject)
+    fetchWantedPersonsByCategory(subject)
       .then((result: WantedPerson[]) => {
         setPersons(result);
         setIsLoading(false);
