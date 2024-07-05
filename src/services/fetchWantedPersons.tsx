@@ -1,8 +1,8 @@
 import { wanted } from "./wantedPerson";
 import { WantedPerson } from "./types";
 
-export const fetchWantedPersons = async (subject: string = ""): Promise<WantedPerson[]> => {
-  console.log("subject", subject);
+export const fetchWantedPersons = async (category: string = ""): Promise<WantedPerson[]> => {
+  console.log("category", category);
   const filterObj: { [key: string]: string } = {
     cyber: "Cyber's Most Wanted",
     "missing-persons": "ViCAP Missing Persons",
@@ -17,9 +17,9 @@ export const fetchWantedPersons = async (subject: string = ""): Promise<WantedPe
       return dateA - dateB;
     });
 
-    if (!subject) return result;
+    if (category === "wanted") return result;
 
-    return result.filter(person => person.subjects.includes(filterObj[subject]));
+    return result.filter(person => person.subjects.includes(filterObj[category]));
   } catch (error) {
     throw new Error("Failed to fetch wanted persons");
   }
