@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { WantedPerson, PersonDetails } from "../../services/types";
 import ImageCard from "../ImageCard";
 import FormDetails from "./FormDetails";
-import Button from "../Button";
+import CTA from "../CTA";
 
 type FormCardProps = {
   person: WantedPerson;
@@ -64,8 +64,8 @@ const FormCard = ({ person, updatePersonDetails }: FormCardProps) => {
           </div>
         </div>
         <div className="flex flex-row justify-center pb-8">
-          <Button text="Submit" type="submit" />
-          <Button text="Cancel" onClick={() => {}} />
+          <CTA text="Submit" type="submit" />
+          <CTA text="Cancel" onClick={() => {}} />
         </div>
       </div>
     </form>

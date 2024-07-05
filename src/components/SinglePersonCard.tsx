@@ -3,7 +3,7 @@ import { WantedPerson } from "../services/types";
 import ImageCard from "./ImageCard";
 import WantedPersonDetails from "./WantedPersonDetails";
 import PersonDescription from "./PersonDescription";
-import Button from "./Button";
+import CTA from "./CTA";
 import { capitalize, removeSeparator } from "../utils/stringUtils";
 
 type WantedPersonProps = {
@@ -61,8 +61,8 @@ const SinglePersonCard = ({
         </div>
       </div>
       <div className="flex flex-row justify-center pb-8">
-        <Button text="edit" onClick={() => editPersonDetails && editPersonDetails(person.id)} />
-        <Button text="remove" onClick={() => removeWantedPerson && removeWantedPerson(person.id)} />
+        <CTA text="edit" onClick={() => editPersonDetails && editPersonDetails(person.id)} />
+        <CTA text="remove" onClick={() => removeWantedPerson && removeWantedPerson(person.id)} />
       </div>
     </div>
   );
