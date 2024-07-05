@@ -1,12 +1,13 @@
-const BASE_URL = "http://localhost:3000/api/v1";
+import { BASE_URL } from "../services/constants";
 
 const handleResponse = async <T>(response: Response): Promise<T> => {
   if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(errorText);
+    const error = await response.json();
+    throw new Error(error.message);
   }
   if (response.status === 204) return {} as T; // handles DELETE requests
-  return response.json();
+
+  return response.json() as T;
 };
 
 const fetchData = async <T>(
