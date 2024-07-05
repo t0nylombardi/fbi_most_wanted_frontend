@@ -77,6 +77,8 @@ const NavBar = ({ logout, isLoggedIn, user }: NavBarProps) => {
                     id="user-profile-button"
                   >
                     <img
+                      data-testid="user-image"
+                      role="img"
                       className="h-[3rem] w-[4rem] rounded-full"
                       src={user?.image.default}
                       alt=""

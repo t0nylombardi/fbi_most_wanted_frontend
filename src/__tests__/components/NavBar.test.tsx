@@ -1,48 +1,54 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { BrowserRouter } from "react-router-dom";
 import "@testing-library/jest-dom";
+import NavBar from "../../components/NavBar"; // Adjust the import path as necessary
+import { User } from "../../services/types";
+import mockedUser from "../../__mocks__/mockUser";
 
-import NavBar from "../../components/NavBar";
+describe("NavBar Component", () => {
+  const mockLogout = jest.fn();
 
-describe("NavBar component", () => {
-  test("renders the NavBar component", () => {
-    render(<NavBar />);
+  const renderNavBar = (isLoggedIn: boolean, user: User | null) => {
+    return render(
+      <BrowserRouter>
+        <NavBar logout={mockLogout} isLoggedIn={isLoggedIn} user={user} />
+      </BrowserRouter>,
+    );
+  };
 
-    // Check for the presence of the main header element
-    const headerElement = screen.getByRole("banner");
-    expect(headerElement).toBeInTheDocument();
+  test("renders nav links correctly", () => {
+    renderNavBar(false, null);
 
-    // Check for the presence of the home link
-    const homeLink = screen.getByRole("link", { name: /FBI WANTED/i });
-    expect(homeLink).toBeInTheDocument();
-    expect(homeLink).toHaveAttribute("href", "/");
-  });
-
-  test("renders all navigation links", () => {
-    render(<NavBar />);
-
-    const links = [
-      { title: "Ten Most Wanted", url: "/top-ten" },
-      { title: "Wanted", url: "/wanted" },
-      { title: "Terrorism", url: "/terrorism" },
-      { title: "Seeking Information", url: "/seeking-info" },
-      { title: "Kidnappings", url: "/kifnappings" },
-      { title: "Missing Persons", url: "/missing-persons" },
-    ];
-
-    // Check if all link titles and urls
+    const links = ["All Wanted", "Cyber Crimes", "Missing Persons", "Violent Crims"];
     links.forEach(link => {
-      const linkElement = screen.getByRole("link", { name: link.title });
-      expect(linkElement).toBeInTheDocument();
-      expect(linkElement).toHaveAttribute("href", link.url);
+      expect(screen.getByText(link)).toBeInTheDocument();
     });
   });
 
-  test("renders the menu button", () => {
-    render(<NavBar />);
+  test('renders "FBI WANTED" heading', () => {
+    renderNavBar(false, null);
+    expect(screen.getByRole("home")).toHaveTextContent("FBI WANTED");
+  });
 
-    // Check for the presence of the menu button
-    const menuButton = screen.getByRole("button", { name: /Open main menu/i });
-    expect(menuButton).toBeInTheDocument();
+  test("displays user profile and logout button when logged in", () => {
+    renderNavBar(true, mockedUser);
+
+    expect(screen.getByRole("img")).toHaveAttribute("src", mockedUser.image.default);
+    expect(screen.getByRole("button", { name: /logout/i })).toBeInTheDocument();
+  });
+
+  test("does not display user profile and logout button when not logged in", () => {
+    renderNavBar(false, null);
+
+    expect(screen.queryByRole("img")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /logout/i })).not.toBeInTheDocument();
+  });
+
+  test("logout function is called when logout button is clicked", () => {
+    renderNavBar(true, mockedUser);
+
+    fireEvent.click(screen.getByRole("button", { name: /logout/i }));
+    expect(mockLogout).toHaveBeenCalledTimes(1);
   });
 });
