@@ -1,119 +1,82 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import "@testing-library/jest-dom";
-import WantedPersonDetails from "../../components/WantedPersonDetails";
-import { WantedPerson } from "../../services/types";
+import WantedPersonDetails, {
+  convertHeightToFeet,
+  convertWeight,
+} from "../../components/WantedPersonDetails";
+import mockPersons from "../../__mocks__/mockPersons";
 
-const renderComponent = (person: WantedPerson) => render(<WantedPersonDetails person={person} />);
+describe("WantedPersonDetails Component", () => {
+  const mockPerson = mockPersons[0];
+  const mockPersonWithZeroValues = {
+    id: "",
+    title: "",
+    details: "",
+    description: "",
+    caution: "",
+    height_max: 0,
+    height_min: 0,
+    weight_max: 0,
+    weight_min: 0,
+    age_range: "",
+    eyes: "",
+    hair: "",
+    place_of_birth: "",
+    race: "",
+    sex: "",
+    url: "",
+    images: [],
+    subjects: [],
+  };
 
-describe("WantedPersonDetail", () => {
-  test('renders "No Details are available for this person." when all details are missing', () => {
-    const emptyPerson: WantedPerson = {
-      id: "",
-      details: "",
-      description: "",
-      caution: "",
-      images: [],
-      title: "",
-      url: "",
-      height_min: 0,
-      weight_min: 0,
-      age_range: "",
-      eyes: "",
-      hair: "",
-      height_max: 0,
-      place_of_birth: "",
-      race: "",
-      sex: "",
-      weight_max: 0,
-      subjects: [],
-    };
+  it("renders component with correct details", () => {
+    render(<WantedPersonDetails person={mockPerson} />);
 
-    renderComponent(emptyPerson);
+    // Check if the component renders
+    const detailsTable = screen.getByRole("table", { name: /details/i });
+    expect(detailsTable).toBeInTheDocument();
 
-    expect(screen.getByText("No Details are available for this person.")).toBeInTheDocument();
-  });
-
-  test.skip("renders the details table when details are present", () => {
-    const personWithDetails: WantedPerson = {
-      id: "123",
-      details: "Details",
-      description: "Description",
-      caution: "Caution",
-      images: [],
-      title: "Title",
-      url: "URL",
-      height_min: 0,
-      weight_min: 0,
-      age_range: "25-30",
-      eyes: "Blue",
-      hair: "Blonde",
-      height_max: 180,
-      place_of_birth: "New York",
-      race: "Caucasian",
-      sex: "Male",
-      weight_max: 75,
-      subjects: [],
-    };
-
-    const feet = Math.floor(personWithDetails.height_max || 0 / 12);
-    const remainingInches = personWithDetails.height_max || 0 % 12;
-    const height = `${feet}ft ${remainingInches}in`;
-
-    const weight = `${personWithDetails?.weight_max ?? 0} lbs`;
-
-    renderComponent(personWithDetails);
-
-    expect(screen.getByText("Age range")).toBeInTheDocument();
-    expect(screen.getByText("25-30")).toBeInTheDocument();
+    // Check if all expected details are rendered
+    expect(screen.getByText(/Age Range/i)).toBeInTheDocument();
     expect(screen.getByText("Eyes")).toBeInTheDocument();
-    expect(screen.getByText("Blue")).toBeInTheDocument();
     expect(screen.getByText("Hair")).toBeInTheDocument();
-    expect(screen.getByText("Blonde")).toBeInTheDocument();
-    expect(screen.getByText("Height max")).toBeInTheDocument();
-    expect(screen.getByText(height)).toBeInTheDocument();
-    expect(screen.getByText("Place of birth")).toBeInTheDocument();
-    expect(screen.getByText("New York")).toBeInTheDocument();
+    expect(screen.getByText(/Height Max/i)).toBeInTheDocument();
+    expect(screen.getByText(/Place Of Birth/i)).toBeInTheDocument();
     expect(screen.getByText("Race")).toBeInTheDocument();
-    expect(screen.getByText("Caucasian")).toBeInTheDocument();
     expect(screen.getByText("Sex")).toBeInTheDocument();
-    expect(screen.getByText("Male")).toBeInTheDocument();
-    expect(screen.getByText("Weight max")).toBeInTheDocument();
-    expect(screen.getByText(weight)).toBeInTheDocument();
+    expect(screen.getByText(/Weight Max/i)).toBeInTheDocument();
   });
 
-  test.skip('renders "n/a" for missing details', () => {
-    const personWithSomeMissingDetails: WantedPerson = {
-      id: "2",
-      title: "Person 2",
-      details: "",
-      description: "",
-      caution: "",
-      height_min: 120,
-      weight_min: 100,
-      url: "url",
-      images: [{ large: "image-url-1", caption: "This is a caption" }],
-      age_range: "",
-      eyes: "",
-      hair: "",
-      height_max: 0,
-      place_of_birth: "",
-      race: "",
-      sex: "Female",
-      weight_max: 75,
-      subjects: ["Jane", "Doe"],
+  it("renders 'No Details' message when person prop is empty", () => {
+    render(<WantedPersonDetails person={mockPersonWithZeroValues} />);
+    const emptyDetailsMessage = screen.getByText("No Details are available for this person.");
+    expect(emptyDetailsMessage).toBeInTheDocument();
+  });
+
+  it("renders 'n/a' for height and weight when values are zero or undefined", () => {
+    const personWithZeroValues = {
+      ...mockPerson,
+      height_max: null,
+      weight_max: null,
     };
 
-    renderComponent(personWithSomeMissingDetails);
+    render(<WantedPersonDetails person={personWithZeroValues} />);
 
-    const detailFields = [
-      { field: personWithSomeMissingDetails.details, label: "Details" },
-      { field: personWithSomeMissingDetails.eyes, label: "Eyes" },
-      { field: personWithSomeMissingDetails.height_max, label: "Height Max" },
-    ];
+    // Check if 'n/a' is rendered for height and weight
+    expect(screen.getByText(/Height Max/i)?.nextSibling?.textContent).toBe("n/a");
+    expect(screen.getByText(/Weight Max/i)?.nextSibling?.textContent).toBe("n/a");
+  });
 
-    detailFields.map(() => {
-      expect(screen.getAllByText("n/a")[0]).toBeInTheDocument();
-    });
+  // Test conversion functions
+
+  it("converts height in inches to feet and inches correctly", () => {
+    expect(convertHeightToFeet(72)).toBe("6ft 0in");
+    expect(convertHeightToFeet(60)).toBe("5ft 0in");
+    expect(convertHeightToFeet(0)).toBe("");
+  });
+
+  it("formats weight in pounds correctly", () => {
+    expect(convertWeight(180)).toBe("180 lbs");
+    expect(convertWeight(0)).toBe("");
   });
 });
