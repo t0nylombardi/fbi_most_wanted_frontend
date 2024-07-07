@@ -76,7 +76,9 @@ const WantedPersonDetails: React.FC<WantedPersonDetailsProps> = ({ person }) => 
         {detailsFromObj.map(key => (
           <tr key={key}>
             <td className="px-8">{capitalize(removeSeparator(key))}</td>
-            <td className="px-8">{capitalize(details[key]?.toString()) || "n/a"}</td>
+            <td data-testid={key} className="px-8">
+              {capitalize(details[key]?.toString()) || "n/a"}
+            </td>
           </tr>
         ))}
       </tbody>

@@ -37,7 +37,10 @@ const Modal = ({
 
   return (
     <>
-      <div className="modal fixed inset-0 z-50 flex items-center justify-center outline-none focus:outline-none">
+      <div
+        data-testid="modal-component"
+        className="modal fixed inset-0 z-50 flex items-center justify-center outline-none focus:outline-none"
+      >
         <div role="dialog" ref={modalRef} className="p-4 rounded-lg">
           {isEditing ? (
             <Form person={person} updatePersonDetails={updatePersonDetails} />

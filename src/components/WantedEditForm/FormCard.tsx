@@ -64,7 +64,7 @@ const FormCard = ({ person, updatePersonDetails }: FormCardProps) => {
           </div>
         </div>
         <div className="flex flex-row justify-center pb-8">
-          <CTA text="Submit" type="submit" />
+          <CTA testId="update-person-details" text="Submit" type="submit" />
           <CTA text="Cancel" onClick={() => {}} />
         </div>
       </div>

@@ -61,8 +61,16 @@ const SinglePersonCard = ({
         </div>
       </div>
       <div className="flex flex-row justify-center pb-8">
-        <CTA text="edit" onClick={() => editPersonDetails && editPersonDetails(person.id)} />
-        <CTA text="remove" onClick={() => removeWantedPerson && removeWantedPerson(person.id)} />
+        <CTA
+          testId="edit-person-details"
+          text="edit"
+          onClick={() => editPersonDetails && editPersonDetails(person.id)}
+        />
+        <CTA
+          testId="remove-person"
+          text="remove"
+          onClick={() => removeWantedPerson && removeWantedPerson(person.id)}
+        />
       </div>
     </div>
   );

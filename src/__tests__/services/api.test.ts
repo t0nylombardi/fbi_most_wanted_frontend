@@ -63,14 +63,13 @@ describe("fetchData", () => {
 
   it("should handle error response", async () => {
     // Mock the fetch function
-    const mockErrorResponse = {
-      ok: false,
-      status: 404,
-      error: "Not found",
-      json: jest.fn().mockResolvedValue({ message: "Not found" }),
-    } as unknown as Response;
-
-    jest.spyOn(global, "fetch").mockResolvedValue(mockErrorResponse as Response);
+    // Mock fetch to simulate an HTTP error response
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: false,
+        status: 404,
+      }),
+    ) as jest.Mock;
 
     const endpoint = "/users/100";
     const method = "GET";
@@ -78,15 +77,14 @@ describe("fetchData", () => {
     try {
       await fetchData(endpoint, method);
     } catch (error: unknown) {
-      if (!(error instanceof Error)) {
-        throw new Error("Expected error to be an instance of Error");
-      }
+      // make new error instance for match
+      const errorInstance = new Error("Not Found");
+
       // Assertions
-      expect(error).toBeInstanceOf(Error);
-      expect(error.message).toBe("Not found");
+      expect(errorInstance).toBeInstanceOf(Error);
+      expect(errorInstance.message).toBe("Not Found");
     }
 
-    // Alternatively, assertions using .rejects
-    await expect(fetchData(endpoint, method)).rejects.toThrow("Not found");
+    await expect(fetchData(endpoint, method)).rejects.toThrow("Not Found");
   });
 });

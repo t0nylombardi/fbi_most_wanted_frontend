@@ -22,3 +22,8 @@ body {
 .btn-active {
   @apply text-cedar-wood-finish-400 hover:text-jungle-green-500 text-xl py-2 px-2 w-full;
 }
+
+.btn-cta {
+  @apply w-full bg-gradient-to-tr from-chilean-fire-500 to-cedar-wood-finish-600;
+  @apply hover:bg-gradient-to-bl text-white font-bold py-2 px-4 mt-4 mx-8;
+}

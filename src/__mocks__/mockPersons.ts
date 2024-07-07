@@ -13,7 +13,7 @@ const mockPersons: WantedPerson[] = [
     images: [{ large: "image-url-1", caption: "This is John Doe" }],
     age_range: "25-30",
     eyes: "Blue",
-    hair: "Blonde",
+    hair: "Blonde", // Ensure this matches the initial state
     height_max: 180,
     place_of_birth: "New York",
     race: "Caucasian",
@@ -33,7 +33,7 @@ const mockPersons: WantedPerson[] = [
     images: [{ large: "image-url-1", caption: "This is Person 2" }],
     age_range: "25-30",
     eyes: "Blue",
-    hair: "Blonde",
+    hair: "red", // Ensure this matches the initial state
     height_max: 180,
     place_of_birth: "New York",
     race: "Caucasian",

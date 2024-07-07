@@ -22,7 +22,7 @@ const FormDetails = ({ detailsObj, details, onDetailsChange }: FormDetailsProps)
               <td className="px-8">{capitalize(removeSeparator(key))}</td>
               <td className="px-8">
                 <input
-                  data-testid={key as string}
+                  data-testid={`${key}-value`}
                   className="appearance-none border rounded w-full py-2 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
                   id={key as string}
                   type="text"

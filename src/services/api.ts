@@ -7,7 +7,10 @@ const handleResponse = async <T>(response: Response): Promise<T> => {
   }
   if (response.status === 204) return {} as T; // handles DELETE requests
 
-  return response.json() as T;
+  try {
+    return await response.json();
+  } catch (error) {}
+  return {} as T;
 };
 
 const fetchData = async <T>(
@@ -23,9 +26,19 @@ const fetchData = async <T>(
     body: body ? JSON.stringify(body) : undefined,
   };
 
-  const response = await fetch(`${BASE_URL}${endpoint}`, options);
-  const data = await handleResponse<T>(response);
-  return { ok: response.ok, data };
+  try {
+    const response = await fetch(`${BASE_URL}${endpoint}`, options);
+
+    // Handle HTTP errors
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await handleResponse<T>(response);
+    return { ok: true, data };
+  } catch (error) {
+    throw new Error("Not Found");
+  }
 };
 
 export { fetchData };

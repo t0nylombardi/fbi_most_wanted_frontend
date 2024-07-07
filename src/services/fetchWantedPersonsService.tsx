@@ -42,11 +42,23 @@ const updateData = async (
   id: string,
   data: PersonDetails,
 ): Promise<WantedPerson> => {
-  const response = await fetchData<WantedPerson>(`${endpoint}/${id}`, "PUT", data);
-  return response.data;
+  try {
+    console.log("Updating data for ID:", id);
+    console.log("Data to update:", data);
+
+    const response = await fetchData<WantedPerson>(`${endpoint}/${id}`, "PUT", data);
+    console.log("Update response:", response);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error updating data:", error);
+    return {} as WantedPerson;
+  }
 };
 
 const deleteData = async (endpoint: string, id: string): Promise<void> => {
+  console.log("Deleting data for ID:", id);
+
   await fetchData<void>(`${endpoint}/${id}`, "DELETE");
 };
 
