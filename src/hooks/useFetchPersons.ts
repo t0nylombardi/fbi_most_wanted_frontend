@@ -8,17 +8,21 @@ const useFetchPersons = (subject: string) => {
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    setIsLoading(true);
-    setError(null);
-    fetchWantedPersonsByCategory(subject)
-      .then((result: WantedPerson[]) => {
-        setPersons(result);
-        setIsLoading(false);
-      })
-      .catch(error => {
-        setError(error);
-        setIsLoading(false);
-      });
+    try {
+      fetchWantedPersonsByCategory(subject)
+        .then((result: WantedPerson[]) => {
+          setPersons(result);
+          setIsLoading(false);
+        })
+        .catch(error => {
+          setError(error as Error);
+          setIsLoading(false);
+        });
+      setIsLoading(false);
+    } catch (error) {
+      setError(error as Error);
+      setIsLoading(false);
+    }
   }, [subject]);
 
   return { persons, isLoading, error, setPersons };
