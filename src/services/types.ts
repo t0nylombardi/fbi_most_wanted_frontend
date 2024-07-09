@@ -1,5 +1,5 @@
 export interface Image {
-  caption: string | null | undefined;
+  caption?: string | null | undefined;
   large: string | null | undefined;
 }
 
@@ -38,6 +38,7 @@ export interface PersonDetails {
   details: string | null | undefined;
   description: string | null | undefined;
   caution: string | null | undefined;
+  images: Image[];
 }
 
 export interface ApiResponse {

@@ -73,6 +73,7 @@ const FormInformation: React.FC<FormInformationProps> = ({
       description: field === "description" ? value : description,
       details: field === "details" ? value : details,
       caution: field === "caution" ? value : caution,
+      images: [],
     });
   };
 

@@ -7,6 +7,7 @@ describe("FormInformation component", () => {
     description: "Sample description",
     details: "Sample details",
     caution: "Sample caution",
+    images: [],
   };
 
   const onUpdateInformation = jest.fn();

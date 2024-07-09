@@ -28,7 +28,6 @@ describe("Modal Component", () => {
   it("renders SinglePersonCard when isEditing is false", () => {
     const { getByText } = render(<Modal {...defaultProps} />);
 
-    // Assuming there's a text in SinglePersonCard
     expect(getByText(mockPerson.title)).toBeInTheDocument();
   });
 
@@ -41,7 +40,7 @@ describe("Modal Component", () => {
   it("calls closeModal when clicking outside the modal", () => {
     render(<Modal {...defaultProps} />);
 
-    fireEvent.mouseDown(document.body); // Simulate click outside modal
+    fireEvent.mouseDown(document.body);
 
     expect(mockCloseModal).toHaveBeenCalledTimes(1);
   });
