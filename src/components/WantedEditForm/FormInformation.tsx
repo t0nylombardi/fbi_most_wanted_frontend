@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import { PersonDetails } from "../../services/types";
 import { findLongestDetails } from "../../utils/stringUtils";
 
@@ -13,60 +13,76 @@ const FormInformation: React.FC<FormInformationProps> = ({
   information,
   onInformationChange,
 }) => {
-  const [description, setDescription] = useState<string>(information.description ?? "");
-  const [details, setDetails] = useState<string>(information.details ?? "");
-  const [caution, setCaution] = useState<string>(information.caution ?? "");
-  const [longestInformation, setLongestInformation] = useState<string>("");
+  const [description, setDescription] = useState(information.description ?? "");
+  const [details, setDetails] = useState(information.details ?? "");
+  const [caution, setCaution] = useState(information.caution ?? "");
+  const [longestInformation, setLongestInformation] = useState("");
+  const [longestInformationKey, setLongestInformationKey] = useState("");
+
+  useEffect(() => {
+    // Initialize state based on props when they change
+    setDescription(information.description ?? "");
+    setDetails(information.details ?? "");
+    setCaution(information.caution ?? "");
+    updateLongestInformation(description, details, caution);
+  }, [information]);
+
+  const updateLongestInformation = (desc: string, det: string, caut: string) => {
+    const longest = findLongestDetails(desc, det, caut);
+    setLongestInformationKey(longest[1]);
+    setLongestInformation(longest[0]);
+  };
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>, field: string) => {
-    console.log(e.target.value);
     const value = e.target.value;
 
-    if (field === "description") {
-      setDescription(value);
-      onInformationChange({
-        description: value,
-        details: undefined,
-        caution: undefined,
-      });
-    } else if (field === "details") {
-      setDetails(value);
-      onInformationChange({
-        details: value,
-        description: undefined,
-        caution: undefined,
-      });
-    } else if (field === "caution") {
-      setCaution(value);
-      onInformationChange({
-        caution: value,
-        details: undefined,
-        description: undefined,
-      });
+    switch (field) {
+      case "description":
+        setDescription(value);
+        onInformationChange({
+          ...information,
+          description: value,
+        });
+        break;
+      case "details":
+        setDetails(value);
+        onInformationChange({
+          ...information,
+          details: value,
+        });
+        break;
+      case "caution":
+        setCaution(value);
+        onInformationChange({
+          ...information,
+          caution: value,
+        });
+        break;
+      default:
+        break;
     }
 
-    // Find the longest information
-    const longest = findLongestDetails(
+    updateLongestInformation(
       field === "description" ? value : description,
       field === "details" ? value : details,
       field === "caution" ? value : caution,
     );
 
-    setLongestInformation(longest[0]);
+    // Update parent component with the changed information
     onInformationChange({
-      [longest[1]]: longest[0],
-      details: undefined,
-      description: undefined,
-      caution: undefined,
+      description: field === "description" ? value : description,
+      details: field === "details" ? value : details,
+      caution: field === "caution" ? value : caution,
     });
   };
 
   return (
     <div>
       <textarea
-        value={longestInformation}
-        placeholder={longestInformation}
-        onChange={e => handleChange(e, longestInformation)}
+        data-testid="description-value"
+        id={longestInformationKey}
+        value={longestInformation.toString() || ""}
+        onChange={e => handleChange(e, longestInformationKey)}
         className="appearance-none border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
         rows={10}
       />

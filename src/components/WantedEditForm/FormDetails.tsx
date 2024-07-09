@@ -9,14 +9,14 @@ type FormDetailsProps = {
   onDetailsChange: (updatedDetails: PersonDetails) => void;
 };
 
-const FormDetails = ({ detailsObj, details, onDetailsChange }: FormDetailsProps) => {
+const FormDetails: React.FC<FormDetailsProps> = ({ detailsObj, details, onDetailsChange }) => {
   const handleChange = (key: keyof PersonDetails, value: string) => {
     onDetailsChange({ ...details, [key]: value });
   };
 
   return (
     <div id="form-details" className="flex flex-wrap justify-start items-center gap-4">
-      <table className="table-auto">
+      <table className="table-auto w-full">
         <tbody>
           {detailsObj.map((key: keyof PersonDetails) => (
             <tr key={key}>
@@ -27,23 +27,12 @@ const FormDetails = ({ detailsObj, details, onDetailsChange }: FormDetailsProps)
                   className="appearance-none border rounded w-full py-2 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
                   id={key as string}
                   type="text"
-                  defaultValue={details[key]?.toString() || ""}
+                  value={details[key]?.toString() || ""}
                   onChange={e => handleChange(key, e.target.value)}
                 />
               </td>
             </tr>
           ))}
-          <tr>
-            <td className="px-8">New Image</td>
-            <td className="px-8">
-              <input
-                className="appearance-none border rounded w-full py-2 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
-                id="image"
-                type="text"
-                placeholder="Image URL here"
-              ></input>
-            </td>
-          </tr>
           <tr>
             <td className="px-8">Description</td>
             <td className="px-8">
