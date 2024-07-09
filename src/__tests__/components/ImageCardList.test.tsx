@@ -18,7 +18,7 @@ describe("ImageCardList", () => {
     const mockOpenModal = jest.fn();
     render(<ImageCardList persons={persons} openModal={mockOpenModal} />);
     const buttons = screen.getAllByRole("button");
-    fireEvent.click(buttons[0]); // Simulate click on the first button
+    fireEvent.click(buttons[0]);
     expect(mockOpenModal).toHaveBeenCalledWith(persons[0]);
   });
 });

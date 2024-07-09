@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import "@testing-library/jest-dom";
-import NavBar from "../../components/NavBar"; // Adjust the import path as necessary
+import NavBar from "../../components/NavBar";
 import { User } from "../../services/types";
 import mockedUser from "../../__mocks__/mockUser";
 

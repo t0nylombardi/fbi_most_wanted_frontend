@@ -20,7 +20,6 @@ const FormInformation: React.FC<FormInformationProps> = ({
   const [longestInformationKey, setLongestInformationKey] = useState("");
 
   useEffect(() => {
-    // Initialize state based on props when they change
     setDescription(information.description ?? "");
     setDetails(information.details ?? "");
     setCaution(information.caution ?? "");
@@ -68,7 +67,6 @@ const FormInformation: React.FC<FormInformationProps> = ({
       field === "caution" ? value : caution,
     );
 
-    // Update parent component with the changed information
     onInformationChange({
       description: field === "description" ? value : description,
       details: field === "details" ? value : details,

@@ -26,7 +26,7 @@ describe("SinglePersonCard Component", () => {
 
     expect(screen.getByTestId("person-title")).toBeInTheDocument();
     expect(screen.getByTestId("person-description")).toBeInTheDocument();
-    expect(screen.getByText("Blue")).toBeInTheDocument(); // Checking one detail
+    expect(screen.getByText("Blue")).toBeInTheDocument();
   });
 
   it("renders close button when showCloseModal is true", () => {

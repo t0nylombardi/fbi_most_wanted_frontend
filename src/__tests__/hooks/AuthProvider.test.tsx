@@ -2,7 +2,6 @@ import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import { AuthProvider, useAuth, AuthContext } from "../../hooks/AuthContext";
 
-// Mock localStorage
 const localStorageMock = (() => {
   let store: { [key: string]: string } = {};
 
@@ -57,27 +56,22 @@ describe("AuthProvider", () => {
       </AuthProvider>,
     );
 
-    // Simulate login first
     fireEvent.change(getByTestId("username-input"), { target: { value: "testuser" } });
     fireEvent.change(getByTestId("password-input"), { target: { value: "testpassword" } });
     fireEvent.click(getByTestId("login-button"));
 
-    // Check if login was successful
     await waitFor(() => {
       expect(localStorage.getItem("isLoggedIn")).toBe("true");
       expect(localStorage.getItem("user")).toBeTruthy();
     });
 
-    // Now simulate logout
     fireEvent.click(getByTestId("logout-button"));
 
-    // Check that localStorage is cleared and state is updated
     await waitFor(() => {
       expect(localStorage.getItem("isLoggedIn")).toBe(undefined);
       expect(localStorage.getItem("user")).toBe(undefined);
     });
 
-    // Check that isLoggedIn and user state reflect logout
     expect(getByTestId("isLoggedIn").textContent).toBe("isLoggedIn: false");
     expect(getByTestId("user").textContent).toBe("user: null");
   });

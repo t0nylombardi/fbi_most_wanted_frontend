@@ -7,7 +7,6 @@ describe("fetchData", () => {
   });
 
   it("should fetch data successfully", async () => {
-    // Mock the fetch function
     const mockData = { id: "1", name: "John Doe" };
     const mockResponse: Response = {
       ok: true,
@@ -21,12 +20,10 @@ describe("fetchData", () => {
 
     jest.spyOn(global, "fetch").mockResolvedValue(mockResponse as Response);
 
-    // Call fetchData with mock endpoint and method
     const endpoint = "/users";
     const method = "GET";
     const { data } = await fetchData<{ id: string; name: string }>(endpoint, method);
 
-    // Assertions
     expect(global.fetch).toHaveBeenCalledWith(`${BASE_URL}${endpoint}`, {
       method,
       headers: {
@@ -38,19 +35,16 @@ describe("fetchData", () => {
   });
 
   it("should handle DELETE request (status 204)", async () => {
-    // Mock the fetch function
     const mockResponse = {
       ok: true,
       status: 204,
     };
     jest.spyOn(global, "fetch").mockResolvedValue(mockResponse as Response);
 
-    // Call fetchData with mock endpoint and method
     const endpoint = "/users/1";
     const method = "DELETE";
     const { data } = await fetchData<void>(endpoint, method);
 
-    // Assertions
     expect(global.fetch).toHaveBeenCalledWith(`${BASE_URL}${endpoint}`, {
       method,
       headers: {
@@ -62,8 +56,6 @@ describe("fetchData", () => {
   });
 
   it("should handle error response", async () => {
-    // Mock the fetch function
-    // Mock fetch to simulate an HTTP error response
     global.fetch = jest.fn(() =>
       Promise.resolve({
         ok: false,
@@ -77,10 +69,8 @@ describe("fetchData", () => {
     try {
       await fetchData(endpoint, method);
     } catch (error: unknown) {
-      // make new error instance for match
       const errorInstance = new Error("Not Found");
 
-      // Assertions
       expect(errorInstance).toBeInstanceOf(Error);
       expect(errorInstance.message).toBe("Not Found");
     }

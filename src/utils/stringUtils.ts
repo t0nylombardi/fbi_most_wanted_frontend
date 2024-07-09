@@ -60,12 +60,10 @@ export const findLongestDetails = (
   details: string | null,
   caution: string | null,
 ): [string, string] => {
-  // Handle null values (if needed)
   description = description || "";
   details = details || "";
   caution = caution || "";
 
-  // Compare lengths
   const length1: number = description.length;
   const length2: number = details.length;
   const length3: number = caution.length;

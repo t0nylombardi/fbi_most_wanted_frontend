@@ -27,7 +27,7 @@ describe("FormInformation component", () => {
 
     const textarea = screen.getByTestId("description-value");
     expect(textarea).toBeInTheDocument();
-    expect(textarea).toHaveValue("Sample description"); // Assuming "description" is the longest initially
+    expect(textarea).toHaveValue("Sample description");
   });
 
   it("updates longest information when user types in textarea", () => {

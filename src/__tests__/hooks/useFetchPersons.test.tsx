@@ -1,5 +1,5 @@
 import react, { Dispatch, SetStateAction } from "react";
-import { renderHook, RenderHookResult, act } from "@testing-library/react"; // Import waitForNextUpdate
+import { renderHook, RenderHookResult, act } from "@testing-library/react";
 import { waitFor } from "@testing-library/react";
 import useFetchPersons from "../../hooks/useFetchPersons";
 import { WantedPerson } from "../../services/types";
@@ -10,10 +10,9 @@ jest.mock("../../services/fetchWantedPersonsByCategory");
 
 describe("useFetchPersons", () => {
   it("fetches persons successfully", async () => {
-    // Mock the resolved value for fetchWantedPersonsByCategory
     (fetchWantedPersonsByCategory as jest.Mock).mockResolvedValueOnce(mockPersons);
 
-    let hook: RenderHookResult<any, any>; // Declare the type of 'hook'
+    let hook: RenderHookResult<any, any>;
     await act(async () => {
       hook = renderHook(() => useFetchPersons("cyber-crime"));
     });
@@ -41,7 +40,6 @@ describe("useFetchPersons", () => {
     const mockError = new Error("Failed to fetch");
     (fetchWantedPersonsByCategory as jest.Mock).mockRejectedValue(mockError);
 
-    // Render the hook
     const { result } = await renderHook(() => useFetchPersons("someCategory"));
 
     waitFor(
@@ -53,10 +51,8 @@ describe("useFetchPersons", () => {
       { interval: 1000, timeout: 5000 },
     );
 
-    // Wait for loading to finish
     await waitFor(() => expect(result.current.isLoading).toBe(false));
 
-    // Assert after error handling
     expect(result.current.error).toEqual(mockError);
     expect(result.current.persons).toEqual([]);
   });

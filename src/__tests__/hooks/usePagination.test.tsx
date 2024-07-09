@@ -2,7 +2,7 @@ import { renderHook, act } from "@testing-library/react";
 import usePagination from "../../hooks/usePagination";
 import { WantedPerson } from "../../services/types";
 import { ITEMS_PER_PAGE } from "../../services/constants";
-import mockPersons from "../../__mocks__/mockPersons"; // Adjust the path to your mock data
+import mockPersons from "../../__mocks__/mockPersons";
 
 describe("usePagination", () => {
   const persons: WantedPerson[] = mockPersons;
@@ -31,12 +31,10 @@ describe("usePagination", () => {
   it("handles previous page correctly", () => {
     const { result } = renderHook(() => usePagination(persons));
 
-    // Move to page 2 first
     act(() => {
       result.current.handleNextPage();
     });
 
-    // Then move back to page 1
     act(() => {
       result.current.handlePrevPage();
     });
@@ -49,7 +47,6 @@ describe("usePagination", () => {
   it("does not go below page 1", () => {
     const { result } = renderHook(() => usePagination(persons));
 
-    // Try moving to a previous page when on the first page
     act(() => {
       result.current.handlePrevPage();
     });

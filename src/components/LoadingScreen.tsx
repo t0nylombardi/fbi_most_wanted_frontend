@@ -6,7 +6,6 @@ const LoadingScreen = () => {
     loadingMessages[Math.floor(Math.random() * loadingMessages.length)],
   );
 
-  // load random loaddingMessage every 0.5 seconds
   React.useEffect(() => {
     const interval = setInterval(() => {
       const randomIndex = Math.floor(Math.random() * loadingMessages.length);

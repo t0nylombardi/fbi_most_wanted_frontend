@@ -18,7 +18,7 @@ export const userAuth = {
       });
 
       if (response.ok) {
-        return { success: true, user: response.data }; // Assuming the API returns the user data
+        return { success: true, user: response.data };
       } else {
         return { success: false };
       }

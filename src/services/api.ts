@@ -5,7 +5,7 @@ const handleResponse = async <T>(response: Response): Promise<T> => {
     const error = await response.json();
     throw new Error(error.message);
   }
-  if (response.status === 204) return {} as T; // handles DELETE requests
+  if (response.status === 204) return {} as T;
 
   try {
     return await response.json();
@@ -29,7 +29,6 @@ const fetchData = async <T>(
   try {
     const response = await fetch(`${BASE_URL}${endpoint}`, options);
 
-    // Handle HTTP errors
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }

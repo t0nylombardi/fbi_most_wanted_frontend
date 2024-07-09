@@ -32,11 +32,9 @@ describe("WantedPersonDetails Component", () => {
   it("renders component with correct details", () => {
     render(<WantedPersonDetails person={mockPerson} />);
 
-    // Check if the component renders
     const detailsTable = screen.getByRole("table", { name: /details/i });
     expect(detailsTable).toBeInTheDocument();
 
-    // Check if all expected details are rendered
     expect(screen.getByText(/Age Range/i)).toBeInTheDocument();
     expect(screen.getByText("Eyes")).toBeInTheDocument();
     expect(screen.getByText("Hair")).toBeInTheDocument();
@@ -62,12 +60,9 @@ describe("WantedPersonDetails Component", () => {
 
     render(<WantedPersonDetails person={personWithZeroValues} />);
 
-    // Check if 'n/a' is rendered for height and weight
     expect(screen.getByText(/Height Max/i)?.nextSibling?.textContent).toBe("n/a");
     expect(screen.getByText(/Weight Max/i)?.nextSibling?.textContent).toBe("n/a");
   });
-
-  // Test conversion functions
 
   it("converts height in inches to feet and inches correctly", () => {
     expect(convertHeightToFeet(72)).toBe("6ft 0in");

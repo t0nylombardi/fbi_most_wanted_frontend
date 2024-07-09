@@ -18,7 +18,6 @@ const PersonDescription = ({ description, details, caution }: PersonDescriptionP
   return (
     <div className="py-8">
       <div
-        // Normally you shouldn't usedangerouslySetInnerHTML but, this html is comming from a safe api source
         dangerouslySetInnerHTML={{
           __html: longestDetail[0] || "No description available",
         }}

@@ -5,10 +5,8 @@ import Profile from "../../pages/Profile";
 import { splitArrayInHalf } from "../../utils/arrayUtils";
 import mockUser from "../../__mocks__/mockUser";
 
-// Mock the CheckBox component
 jest.mock("../../components/CheckBox", () => ({ text }: { text: string }) => <div>{text}</div>);
 
-// Mock the splitArrayInHalf function
 jest.mock("../../utils/arrayUtils", () => ({
   splitArrayInHalf: jest.fn(),
 }));
