@@ -22,7 +22,7 @@ const ModalManager: React.FC<ModalManagerProps> = ({
     setActivePerson(null);
   };
 
-  const updatePersonDetails = async (id: string, updatedDetails: Partial<PersonDetails>) => {
+  const updatePersonDetails = async (id: string, updatedDetails: PersonDetails) => {
     setIsEditing(true);
 
     try {
@@ -37,6 +37,7 @@ const ModalManager: React.FC<ModalManagerProps> = ({
       );
 
       setPersons(updatedPersons);
+      setActivePerson(result);
       setIsEditing(false);
     } catch (error) {
       console.log(error);

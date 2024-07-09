@@ -3,16 +3,20 @@ import { WantedPerson, PersonDetails } from "../../services/types";
 import ImageCard from "../ImageCard";
 import FormDetails from "./FormDetails";
 import CTA from "../CTA";
+import FormInformation from "./FormInformation";
 
 type FormCardProps = {
   person: WantedPerson;
-  updatePersonDetails: (id: string, updatedDetails: Partial<PersonDetails>) => void;
+  updatePersonDetails: (id: string, updatedDetails: PersonDetails) => void;
 };
 
 const FormCard = ({ person, updatePersonDetails }: FormCardProps) => {
-  const [formDetails, setFormDetails] = useState<PersonDetails>({ ...person });
+  const [formDetails, setFormDetails] = useState<PersonDetails>({
+    ...person,
+    age_range: person.age_range?.toString() ?? "",
+  });
 
-  const handleDetailsChange = (updatedDetails: Partial<PersonDetails>) => {
+  const handleDetailsChange = (updatedDetails: PersonDetails) => {
     setFormDetails(prevDetails => ({
       ...prevDetails,
       ...updatedDetails,
@@ -53,14 +57,6 @@ const FormCard = ({ person, updatePersonDetails }: FormCardProps) => {
               details={formDetails}
               onDetailsChange={handleDetailsChange}
             />
-            <div className="py-8">
-              <textarea
-                id="description"
-                rows={10}
-                placeholder={person.description || person.details || "No description available"}
-                className="text-white w-full mb-10"
-              />
-            </div>
           </div>
         </div>
         <div className="flex flex-row justify-center pb-8">

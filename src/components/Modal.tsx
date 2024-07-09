@@ -8,7 +8,7 @@ interface ModalProps {
   person: WantedPerson;
   isEditing: boolean;
   editPersonDetails: (id: string) => void;
-  updatePersonDetails: (id: string, updatedDetails: Partial<PersonDetails>) => void;
+  updatePersonDetails: (id: string, updatedDetails: PersonDetails) => void;
   removeWantedPerson: () => void;
 }
 

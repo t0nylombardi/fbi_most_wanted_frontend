@@ -5,10 +5,10 @@ export interface Image {
 
 export interface WantedPerson {
   id: string;
-  age_range: string;
-  details: string;
-  description: string;
-  caution: string;
+  age_range: string | number | null | undefined;
+  details: string | null | undefined;
+  description: string | null | undefined;
+  caution: string | null | undefined;
   eyes: string;
   hair: string;
   images: Image[];
@@ -35,6 +35,9 @@ export interface PersonDetails {
   place_of_birth?: string | null | undefined;
   race?: string | null | undefined;
   sex?: string | null | undefined;
+  details: string | null | undefined;
+  description: string | null | undefined;
+  caution: string | null | undefined;
 }
 
 export interface ApiResponse {

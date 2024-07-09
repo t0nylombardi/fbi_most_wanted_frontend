@@ -1,11 +1,12 @@
 import React from "react";
 import { PersonDetails } from "../../services/types";
 import { capitalize, removeSeparator } from "../../utils/stringUtils";
+import FormInformation from "./FormInformation";
 
 type FormDetailsProps = {
   detailsObj: (keyof PersonDetails)[];
   details: PersonDetails;
-  onDetailsChange: (updatedDetails: Partial<PersonDetails>) => void;
+  onDetailsChange: (updatedDetails: PersonDetails) => void;
 };
 
 const FormDetails = ({ detailsObj, details, onDetailsChange }: FormDetailsProps) => {
@@ -41,6 +42,16 @@ const FormDetails = ({ detailsObj, details, onDetailsChange }: FormDetailsProps)
                 type="text"
                 placeholder="Image URL here"
               ></input>
+            </td>
+          </tr>
+          <tr>
+            <td className="px-8">Description</td>
+            <td className="px-8">
+              <FormInformation
+                informationObj={detailsObj}
+                information={details}
+                onInformationChange={onDetailsChange}
+              />
             </td>
           </tr>
         </tbody>

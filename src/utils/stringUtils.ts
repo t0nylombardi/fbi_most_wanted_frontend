@@ -49,29 +49,29 @@ export const convertWeight = (weight: number): string | null => {
 };
 
 /**
- * Finds the longest string from a list of strings.
- * @param str1 The first string.
- * @param str2 The second string.
- * @param str3 The third string.
- * @returns The longest string.
+ * Finds the longest string from a list of strings and its name.
+ * @param description The description string.
+ * @param details The details string.
+ * @param caution The caution string.
+ * @returns An array where the first element is the longest string and the second element is the name of that string.
  */
-export const findLonestDetail = (
-  str1: string | null,
-  str2: string | null,
-  str3: string | null,
-): string => {
+export const findLongestDetails = (
+  description: string | null,
+  details: string | null,
+  caution: string | null,
+): [string, string] => {
   // Handle null values (if needed)
-  str1 = str1 || "";
-  str2 = str2 || "";
-  str3 = str3 || "";
+  description = description || "";
+  details = details || "";
+  caution = caution || "";
 
   // Compare lengths
-  const length1: number = str1.length;
-  const length2: number = str2.length;
-  const length3: number = str3.length;
+  const length1: number = description.length;
+  const length2: number = details.length;
+  const length3: number = caution.length;
 
-  if (length1 >= length2 && length1 >= length3) return str1;
-  if (length2 >= length1 && length2 >= length3) return str2;
+  if (length1 >= length2 && length1 >= length3) return [description, "description"];
+  if (length2 >= length1 && length2 >= length3) return [details, "details"];
 
-  return str3;
+  return [caution, "caution"];
 };

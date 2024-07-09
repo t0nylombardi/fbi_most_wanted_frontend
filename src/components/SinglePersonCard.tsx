@@ -58,9 +58,9 @@ const SinglePersonCard = ({
             <WantedPersonDetails person={person} />
           </div>
           <PersonDescription
-            description={person.description}
-            details={person.details}
-            caution={person.caution}
+            description={person.description || ""}
+            details={person.details || ""}
+            caution={person.caution || ""}
           />
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { findLonestDetail } from "../utils/stringUtils";
+import { findLongestDetails } from "../utils/stringUtils";
 
 interface PersonDescriptionProps {
   description: string | null;
@@ -14,13 +14,13 @@ interface PersonDescriptionProps {
 }
 
 const PersonDescription = ({ description, details, caution }: PersonDescriptionProps) => {
-  const longestDetail = findLonestDetail(description, details, caution);
+  const longestDetail = findLongestDetails(description, details, caution);
   return (
     <div className="py-8">
       <div
         // Normally you shouldn't usedangerouslySetInnerHTML but, this html is comming from a safe api source
         dangerouslySetInnerHTML={{
-          __html: longestDetail || "No description available",
+          __html: longestDetail[0] || "No description available",
         }}
         className="text-white w-full mb-10"
         data-testid="person-description"
