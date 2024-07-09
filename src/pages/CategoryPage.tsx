@@ -23,9 +23,9 @@ const CategoryPage: React.FC<CategoryPageProps> = ({ category }) => {
 
   const [activePerson, setActivePerson] = useState<WantedPerson | null>(null);
 
-  const openModal = useCallback((person: WantedPerson) => {
+  const openModal = (person: WantedPerson) => {
     setActivePerson(person);
-  }, []);
+  };
 
   if (isLoading) return <LoadingScreen />;
   if (error) return <div>{`Error: ${error.message}`}</div>;

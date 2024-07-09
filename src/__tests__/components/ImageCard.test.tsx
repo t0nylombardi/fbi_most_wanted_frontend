@@ -10,7 +10,7 @@ describe("ImageCard", () => {
     caption: "Test Caption",
   };
 
-  test("renders the image with the correct src and alt attributes", () => {
+  it("renders the image with the correct src and alt attributes", () => {
     const { getByAltText } = render(<ImageCard image={image} caption={true} />);
     const imgElement = getByAltText(image.caption ?? "");
 
@@ -19,7 +19,7 @@ describe("ImageCard", () => {
     expect(imgElement).toHaveAttribute("alt", image.caption ?? "Image");
   });
 
-  test("renders the image caption correctly", () => {
+  it("renders the image caption correctly", () => {
     const { getByText } = render(<ImageCard image={image} caption={true} />);
     const captionElement = getByText(image.caption ?? "");
 
@@ -27,7 +27,7 @@ describe("ImageCard", () => {
     expect(captionElement).toHaveTextContent(image.caption ?? "");
   });
 
-  test("applies the correct class names", () => {
+  it("applies the correct class names", () => {
     const { container } = render(<ImageCard image={image} caption={true} />);
     const cardElement = container.firstChild;
 

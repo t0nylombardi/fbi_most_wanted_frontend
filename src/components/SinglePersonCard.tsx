@@ -35,7 +35,11 @@ const SinglePersonCard = ({
         }`}
       >
         {showCloseModal && (
-          <button onClick={closeModal} className="absolute top-0 right-0 m-4 p-2 ">
+          <button
+            data-testid="close-modal"
+            onClick={closeModal}
+            className="absolute top-0 right-0 m-4 p-2 "
+          >
             <span className="bg-transparent text-chilean-fire-500 h-10 w-10 text-3xl block outline-none focus:outline-none">
               ×
             </span>

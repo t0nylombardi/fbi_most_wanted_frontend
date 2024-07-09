@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { act, useEffect, useRef } from "react";
 import { WantedPerson, PersonDetails } from "../services/types";
 import SinglePersonCard from "./SinglePersonCard";
 import Form from "./WantedEditForm/FormCard";
