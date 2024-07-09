@@ -11,7 +11,7 @@ export const fetchWantedPersonsByCategory = async (
   category: string = "",
 ): Promise<WantedPerson[]> => {
   const filterObj: { [key: string]: string } = {
-    cyber: "Cyber's Most Wanted",
+    "cyber-crimes": "Cyber's Most Wanted",
     "missing-persons": "ViCAP Missing Persons",
     "violent-crimes": "Violent Crime - Murders",
   };

@@ -21,7 +21,7 @@ describe("fetchWantedPersons", () => {
   });
 
   it("should filter persons based on category", async () => {
-    const result = await fetchWantedPersonsByCategory("cyber");
+    const result = await fetchWantedPersonsByCategory("cyber-crimes");
 
     expect(wanted.read).toHaveBeenCalled();
     expect(result).toEqual([mockPersons[0]]);

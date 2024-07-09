@@ -11,7 +11,7 @@ const ImageCardList = ({ persons, openModal }: ImageCardListProps) => {
   return (
     <div className="grid gap-4 grid-cols-5" data-testid="image-list" role="image-list">
       {persons.map(person => (
-        <div key={person.id} className="flex justify-center items-center">
+        <div key={person.id} className="flex justify-center items-center col-span-1">
           <button data-testid="image-card" role="button" onClick={() => openModal(person)}>
             <ImageCard image={person.images[0]} caption={false} />
           </button>
