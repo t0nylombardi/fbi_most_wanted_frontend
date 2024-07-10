@@ -1,5 +1,5 @@
 export interface Image {
-  caption?: string | null | undefined;
+  caption: string | null | undefined;
   large: string | null | undefined;
 }
 
@@ -22,8 +22,7 @@ export interface WantedPerson {
   weight_max: number | string | null | undefined;
   weight_min: number | string | null | undefined;
   subjects: string[];
-  [key: string]: string | string[] | number | null | undefined | Image[];
-  [key: number]: string | number | null | undefined | Image[];
+  modified: string | null | undefined;
 }
 
 export interface PersonDetails {

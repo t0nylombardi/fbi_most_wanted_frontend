@@ -27,6 +27,7 @@ describe("WantedPersonDetails Component", () => {
     url: "",
     images: [],
     subjects: [],
+    modified: "",
   };
 
   it("renders component with correct details", () => {

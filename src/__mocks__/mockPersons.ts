@@ -20,6 +20,7 @@ const mockPersons: WantedPerson[] = [
     sex: "Male",
     weight_max: 75,
     subjects: ["Cyber's Most Wanted"],
+    modified: "2021-01-01",
   },
   {
     id: "2",
@@ -40,6 +41,7 @@ const mockPersons: WantedPerson[] = [
     sex: "Female",
     weight_max: 75,
     subjects: ["ViCAP Missing Persons"],
+    modified: "2021-01-01",
   },
 ];
 

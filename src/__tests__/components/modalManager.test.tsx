@@ -7,6 +7,20 @@ import mockPersons from "../../__mocks__/mockPersons";
 jest.mock("../../services/fetchWantedPersonsService");
 
 describe("ModalManager", () => {
+  let consoleErrorMock: jest.SpyInstance;
+
+  beforeAll(() => {
+    consoleErrorMock = jest.spyOn(console, "error").mockImplementation(() => {});
+  });
+
+  afterAll(() => {
+    consoleErrorMock.mockRestore();
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("should update person details and state correctly", async () => {
     const setActivePerson = jest.fn();
     const setPersons = jest.fn();
@@ -88,6 +102,9 @@ describe("ModalManager", () => {
   });
 
   it("should handle errors gracefully during update", async () => {
+    const originalError = console.error;
+    console.error = jest.fn();
+
     const setActivePerson = jest.fn();
     const setPersons = jest.fn();
 
@@ -114,5 +131,7 @@ describe("ModalManager", () => {
     });
 
     expect(screen.getByTestId("isEditing-state")).toHaveTextContent("false");
+
+    console.error = originalError; // Restore console.error
   });
 });

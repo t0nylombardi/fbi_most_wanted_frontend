@@ -1,7 +1,12 @@
 import { fetchData } from "./api";
 import { PersonDetails, WantedPerson } from "./types";
 
-const processWantedPersons = (data: WantedPerson[]): WantedPerson[] => {
+const createData = async (endpoint: string, data: WantedPerson): Promise<WantedPerson> => {
+  const response = await fetchData<WantedPerson>(endpoint, "POST", data);
+  return response.data;
+};
+
+export const processWantedPersons = (data: WantedPerson[]): WantedPerson[] => {
   if (!data) return [];
   if (!Array.isArray(data)) return [data];
   return data.map((item: WantedPerson) => ({
@@ -27,11 +32,6 @@ const processWantedPersons = (data: WantedPerson[]): WantedPerson[] => {
   }));
 };
 
-const createData = async (endpoint: string, data: WantedPerson): Promise<WantedPerson> => {
-  const response = await fetchData<WantedPerson>(endpoint, "POST", data);
-  return response.data;
-};
-
 const readData = async (endpoint: string): Promise<WantedPerson[]> => {
   const response = await fetchData<WantedPerson[]>(endpoint);
   return response.data;
@@ -41,13 +41,18 @@ const updateData = async (
   endpoint: string,
   id: string,
   data: PersonDetails,
-): Promise<WantedPerson> => {
+): Promise<WantedPerson | null> => {
   try {
     const response = await fetchData<WantedPerson>(`${endpoint}/${id}`, "PUT", data);
     return response.data;
   } catch (error) {
-    console.error("Error updating data:", error);
-    return {} as WantedPerson;
+    if (error instanceof Error) {
+      console.error(`Error updating data at ${endpoint}/${id}:`, error.message);
+    } else {
+      console.error(`Unexpected error updating data at ${endpoint}/${id}:`, error);
+    }
+
+    return null;
   }
 };
 

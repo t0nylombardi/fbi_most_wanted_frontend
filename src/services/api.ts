@@ -27,14 +27,16 @@ const fetchData = async <T>(
   };
 
   try {
-    const response = await fetch(`${BASE_URL}${endpoint}`, options);
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    const data = await handleResponse<T>(response);
-    return { ok: true, data };
+    return await fetch(`${BASE_URL}${endpoint}`, options)
+      .then(response => {
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        return response;
+      })
+      .then(response => handleResponse<T>(response))
+      .then(data => ({ ok: true, data }))
+      .catch(error => {
+        throw new Error(error.message);
+      });
   } catch (error) {
     throw new Error("Not Found");
   }

@@ -84,10 +84,16 @@ const Login = () => {
           </div>
         </form>
 
-        <div className="mt-6 text-lg font-medium leading-6 text-gray-500">
-          Username & Password
-          <p className="pt-4">rickastley</p>
-          <p className="p-2">nevergonnagiveyouup</p>
+        <div className="flex flex-col justify-center item-center mt-6 text-lg font-medium leading-6 text-gray-500">
+          <p className="flex justify-center pt-4">Demo credentials</p>
+          <div className="flex flex-row">
+            <p className="p-4">Username:</p>
+            <p className="p-4 text-chilean-fire-500/80">rickastley</p>
+          </div>
+          <div className="flex flex-row">
+            <p className="p-4">Password:</p>
+            <p className="p-4 text-chilean-fire-500/80">nevergonnagiveyouup</p>
+          </div>
         </div>
       </div>
     </div>
