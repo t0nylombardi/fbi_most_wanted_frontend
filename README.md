@@ -56,8 +56,8 @@ npm run dev
 - Frontend: Vite, React, Typescript
 - Backend: Express.js
 - Database: Mock database using db.json
-- Styling: Tailwind CSS (or any other CSS framework you used)
-- Authentication: JWT (or any other authentication method you used)
+- Styling: Tailwind CSS
+- Authentication: None Mocked in Expressjs DB.js
 
 License
 This project is licensed under the MIT License. See the LICENSE file for details.
