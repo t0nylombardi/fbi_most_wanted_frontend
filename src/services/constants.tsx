@@ -1,13 +1,15 @@
 import dotenv from "dotenv";
 // Determine the appropriate .env file to load based on NODE_ENV or mode
-const envFile =
-  process.env.NODE_ENV === "test"
-    ? ".env.test"
-    : process.env.NODE_ENV === "production"
-    ? ".env.prod"
-    : ".env.development";
+console.log("NODE_ENV", process.env);
 
-dotenv.config({ path: envFile });
+// dotenv.config({
+//   path:
+//     process.env.NODE_ENV === "test"
+//       ? ".env.test"
+//       : process.env.NODE_ENV === "production"
+//       ? ".env.prod"
+//       : ".env.development",
+// });
 
 export const BASE_URL =
   process.env.API_URL || "https://fbi-most-wanted-backend.onrender.com/api/v1";
