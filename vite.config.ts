@@ -12,6 +12,6 @@ export default defineConfig({
   define: {
     "process.env": process.env,
     "import.meta.env": process.env,
-    "import.meta.env.VITE_API_URL": process.env.VITE_API_URL || "http://localhost:3001",
+    "import.meta.env.VITE_API_URL": process.env.VITE_API_URL,
   },
 });

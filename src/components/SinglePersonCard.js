@@ -1,0 +1,10 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import ImageCard from "./ImageCard";
+import WantedPersonDetails from "./WantedPersonDetails";
+import PersonDescription from "./PersonDescription";
+import CTA from "./CTA";
+import { capitalize, removeSeparator } from "../utils/stringUtils";
+const SinglePersonCard = ({ person, closeModal, showCloseModal = false, modal = false, editPersonDetails, removeWantedPerson, }) => {
+    return (_jsxs("div", { id: "single-person-card", className: `flex flex-col justify-center relative bg-gray-800 border border-cyprus-700 shadow-2xl rounded-2xl `, children: [_jsxs("div", { id: "inner-container", className: `flex flex-row justify-around relative p-4 bg-gray-800 rounded-2xl ${modal ? "w-[80rem]" : ""}`, children: [showCloseModal && (_jsx("button", { "data-testid": "close-modal", onClick: closeModal, className: "absolute top-0 right-0 m-4 p-2 ", children: _jsx("span", { className: "bg-transparent text-chilean-fire-500 h-10 w-10 text-3xl block outline-none focus:outline-none", children: "\u00D7" }) })), _jsx(ImageCard, { image: person.images[0], caption: true }), _jsxs("div", { className: "flex flex-col justify-around w-full sm:w-[70%] md:w-[60%] lg:w-[50%]", children: [_jsx("h1", { className: "text-white font-bold text-3xl mt-6 mb-8", "data-testid": "person-title", role: "title", children: capitalize(removeSeparator(person.title || "")) }), _jsx("div", { id: "details", className: "flex flex-wrap justify-start items-center gap-4", children: _jsx(WantedPersonDetails, { person: person }) }), _jsx(PersonDescription, { description: person.description || "", details: person.details || "", caution: person.caution || "" })] })] }), _jsxs("div", { className: "flex flex-row justify-center pb-8", children: [_jsx(CTA, { testId: "edit-person-details", text: "edit", onClick: () => editPersonDetails && editPersonDetails(person.id) }), _jsx(CTA, { testId: "remove-person", text: "remove", onClick: () => removeWantedPerson && removeWantedPerson(person.id) })] })] }));
+};
+export default SinglePersonCard;
