@@ -1,5 +1,16 @@
-export const BASE_URL = "http://localhost:3000/api/v1";
+import dotenv from "dotenv";
+// Determine the appropriate .env file to load based on NODE_ENV or mode
+const envFile =
+  process.env.NODE_ENV === "test"
+    ? ".env.test"
+    : process.env.NODE_ENV === "production"
+    ? ".env.prod"
+    : ".env.development";
 
+dotenv.config({ path: envFile });
+
+export const BASE_URL =
+  process.env.API_URL || "https://fbi-most-wanted-backend.onrender.com/api/v1";
 export const ITEMS_PER_PAGE = 20;
 
 export const loadingMessages = [
