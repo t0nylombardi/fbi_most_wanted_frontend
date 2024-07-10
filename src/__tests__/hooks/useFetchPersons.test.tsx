@@ -1,59 +1,61 @@
-import react, { Dispatch, SetStateAction } from "react";
-import { renderHook, RenderHookResult, act } from "@testing-library/react";
+import { renderHook, act } from "@testing-library/react";
 import { waitFor } from "@testing-library/react";
 import useFetchPersons from "../../hooks/useFetchPersons";
-import { WantedPerson } from "../../services/types";
 import { fetchWantedPersonsByCategory } from "../../services/fetchWantedPersonsByCategory";
 import mockPersons from "../../__mocks__/mockPersons";
 
 jest.mock("../../services/fetchWantedPersonsByCategory");
 
 describe("useFetchPersons", () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
+  });
+
   it("fetches persons successfully", async () => {
     (fetchWantedPersonsByCategory as jest.Mock).mockResolvedValueOnce(mockPersons);
 
-    let hook: RenderHookResult<any, any>;
-    await act(async () => {
-      hook = renderHook(() => useFetchPersons("cyber-crime"));
-    });
+    const { result } = renderHook(() => useFetchPersons("cyber-crime"));
 
-    const { result } = hook!;
-
-    waitFor(
-      () => {
-        expect(result.current.isLoading).toBe(true);
-        expect(result.current.error).toBeNull();
-        expect(result.current.persons).toEqual([]);
-      },
-      { interval: 1000, timeout: 5000 },
-    );
-
-    await act(async () => {
-      await waitFor(() => !result.current.isLoading);
-    });
-
+    expect(result.current.isLoading).toBe(true);
     expect(result.current.error).toBeNull();
-    expect(result.current.persons).toEqual(mockPersons);
+    expect(result.current.persons).toEqual([]);
+
+    // Advance timers by 8 seconds
+    act(() => {
+      jest.advanceTimersByTime(8000);
+    });
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+      expect(result.current.error).toBeNull();
+      expect(result.current.persons).toEqual(mockPersons);
+    });
   });
 
-  it("handles error during fetch", async () => {
-    const mockError = new Error("Failed to fetch");
-    (fetchWantedPersonsByCategory as jest.Mock).mockRejectedValue(mockError);
+  it("handles fetch error", async () => {
+    const error = new Error("Failed to fetch");
+    (fetchWantedPersonsByCategory as jest.Mock).mockRejectedValueOnce(error);
 
-    const { result } = await renderHook(() => useFetchPersons("someCategory"));
+    const { result } = renderHook(() => useFetchPersons("cyber-crime"));
 
-    waitFor(
-      () => {
-        expect(result.current.isLoading).toBe(true);
-        expect(result.current.error).toBeNull();
-        expect(result.current.persons).toEqual([]);
-      },
-      { interval: 1000, timeout: 5000 },
-    );
-
-    await waitFor(() => expect(result.current.isLoading).toBe(false));
-
-    expect(result.current.error).toEqual(mockError);
+    expect(result.current.isLoading).toBe(true);
+    expect(result.current.error).toBeNull();
     expect(result.current.persons).toEqual([]);
+
+    // Advance timers by 8 seconds
+    act(() => {
+      jest.advanceTimersByTime(8000);
+    });
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+      expect(result.current.error).toBe(error);
+      expect(result.current.persons).toEqual([]);
+    });
   });
 });

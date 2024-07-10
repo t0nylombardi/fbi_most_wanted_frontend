@@ -13,7 +13,7 @@ const NavBar = ({ logout, isLoggedIn, user }: NavBarProps) => {
     { title: "All Wanted", url: "/" },
     { title: "Cyber Crimes", url: "/cyber" },
     { title: "Missing Persons", url: "/missing-persons" },
-    { title: "Violent Crims", url: "/violent-crimes" },
+    { title: "Violent Crimes", url: "/violent-crimes" },
   ];
 
   return (
@@ -50,7 +50,7 @@ const NavBar = ({ logout, isLoggedIn, user }: NavBarProps) => {
                 <div>
                   <NavLink
                     to="/profile"
-                    className="relative flex items-center justify-center w-8 h-8 overflow-hidden rounded-full"
+                    className="relative flex items-center justify-center w-8 h-8 overflow-hidden rounded-full mx-4"
                     id="user-profile-button"
                   >
                     <img

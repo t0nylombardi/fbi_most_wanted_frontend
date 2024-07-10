@@ -20,7 +20,7 @@ describe("NavBar Component", () => {
   it("renders nav links correctly", () => {
     renderNavBar(false, null);
 
-    const links = ["All Wanted", "Cyber Crimes", "Missing Persons", "Violent Crims"];
+    const links = ["All Wanted", "Cyber Crimes", "Missing Persons", "Violent Crimes"];
     links.forEach(link => {
       expect(screen.getByText(link)).toBeInTheDocument();
     });
